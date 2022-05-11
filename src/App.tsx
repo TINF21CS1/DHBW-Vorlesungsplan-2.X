@@ -22,7 +22,7 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <Router>
         <CssBaseline />
-        <Box mb={2}>
+        <Box mb={1}>
           <Nav />
         </Box>
         <Routes>
