@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Grid, Stack, Box, Typography, Button } from "@mui/material";
+import { Grid, Stack, Box, Typography, IconButton } from "@mui/material";
+import { ChevronRight, ChevronLeft } from "@mui/icons-material";
 import { startOfWeek, isSameDay, add, format } from 'date-fns';
 import CalendarItem from './CalendarItem';
 import Event from '../models/Event';
@@ -13,40 +14,42 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
         return props.events.filter(e => isSameDay(e.start, date));
     });
 
-    const events_with_padding: JSX.Element[][] = Array.from(Array(6).keys()).map(i => []);
-
-    for (let day = 0; day < events_per_day.length; day++) {
-        const events = events_per_day[day];
-        for (let event_ind = 0; event_ind < events.length; event_ind++) {
-            const event = events[event_ind];
-            // Disable padding for now cause it's kinda ugly 
-            // let diff = 0;
-            // if (event_ind === 0) {
-            //     diff = differenceInMinutes(event.start, startOfDay(event.start)) - (7 * 60);
-            // } else if (event_ind < events.length - 1) {
-            //     diff = differenceInMinutes(events[event_ind+1].start, event.start);
-            // }
-            // if (diff !== 0) {
-            //     const percentage = diff / (24 * 60) * 400;
-            //     console.log({event: event, percentage: percentage});
-            //     events_with_padding[day].push(<Box height={percentage + 'px'}></Box>);
-            // }
-
-            events_with_padding[day].push(<CalendarItem key={event.start.toISOString()} event={event} />);
+    let touchstartX: number = 0;
+    let touchendX: number = 0;
+    function handleGesture() {
+        if (Math.abs(touchendX - touchstartX) > 150) {
+            if (touchendX < touchstartX) setCurrentWeek(startOfWeek(add(currentWeek, { days: 7 }), { weekStartsOn: 1 }))
+            if (touchendX > touchstartX) setCurrentWeek(startOfWeek(add(currentWeek, { days: -7 }), { weekStartsOn: 1 }))
         }
     }
+    type TouchEventHandler = (event: React.TouchEvent<HTMLDivElement>) => void;
+    const touchstart: TouchEventHandler = (e) => {
+        touchstartX = e.changedTouches[0].clientX;
+    };
+    const touchend: TouchEventHandler = (e) => {
+        touchendX = e.changedTouches[0].clientX;
+        handleGesture()
+    };
 
 
-    return <Box>
-        { /* <Button onClick={() => setCurrentWeek(startOfWeek(add(currentWeek, { days: -7 }), { weekStartsOn: 1 }))}>
-            <Typography>Vorherige Woche</Typography>
-        </Button>
-        <Typography component="span">KW {format(currentWeek, "ww")}</Typography>
-        <Button onClick={() => setCurrentWeek(startOfWeek(add(currentWeek, { days: 7 }), { weekStartsOn: 1 }))}>
-            <Typography>Nächste Woche</Typography>
-</Button> */ }
+    return <Box onTouchStart={touchstart} onTouchEnd={touchend}>
+        <Stack justifyContent="center" direction="row">
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+            }}>
+                <IconButton onClick={() => setCurrentWeek(startOfWeek(add(currentWeek, { days: -7 }), { weekStartsOn: 1 }))} color="secondary" aria-label="letzte Woche">
+                    <ChevronLeft />
+                </IconButton>
+                <Typography align="center" >KW {format(currentWeek, "ww")}</Typography>
+                <IconButton onClick={() => setCurrentWeek(startOfWeek(add(currentWeek, { days: 7 }), { weekStartsOn: 1 }))} color="secondary" aria-label="nächste Woche">
+                    <ChevronRight />
+                </IconButton>
+            </div>
+        </Stack>
         <Grid container spacing={1} >
-            {events_with_padding.map((events, i) =>
+            {events_per_day.map((events, i) =>
                 <Grid item xs={12} sm={6} md={2} key={i}>
                     <Stack spacing={0}>
                         <Box sx={{
@@ -54,10 +57,10 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
                         }} padding={1}>
                             <Typography color="white">{format(add(currentWeek, { days: i }), "EEEE (dd.MM.yyyy)")} </Typography>
                         </Box>
-                        {events}
+                        {events.map(event => <CalendarItem key={event.start.toISOString()} event={event} />)}
                     </Stack>
                 </Grid>
-            )}  
+            )}
         </Grid>
     </Box>
 };
