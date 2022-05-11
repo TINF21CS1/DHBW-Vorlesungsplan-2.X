@@ -4,4 +4,5 @@ export default interface Event {
     title: string;
     location: string;
     speaker: string;
+    ignored?: boolean;
 }
