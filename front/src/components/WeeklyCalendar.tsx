@@ -33,17 +33,18 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
 
 
     return <Box onTouchStart={touchstart} onTouchEnd={touchend}>
+        API_ENDPOINT is {process.env.API_ENDPOINT}
         <Stack justifyContent="center" direction="row">
             <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 flexWrap: 'wrap',
             }}>
-                <IconButton onClick={() => setCurrentWeek(startOfWeek(add(currentWeek, { days: -7 }), { weekStartsOn: 1 }))} color="secondary" aria-label="letzte Woche">
+                <IconButton size="large" onClick={() => setCurrentWeek(startOfWeek(add(currentWeek, { days: -7 }), { weekStartsOn: 1 }))} color="secondary" aria-label="letzte Woche">
                     <ChevronLeft />
                 </IconButton>
                 <Typography align="center" >KW {format(currentWeek, "ww")}</Typography>
-                <IconButton onClick={() => setCurrentWeek(startOfWeek(add(currentWeek, { days: 7 }), { weekStartsOn: 1 }))} color="secondary" aria-label="nächste Woche">
+                <IconButton size="large" onClick={() => setCurrentWeek(startOfWeek(add(currentWeek, { days: 7 }), { weekStartsOn: 1 }))} color="secondary" aria-label="nächste Woche">
                     <ChevronRight />
                 </IconButton>
             </div>
