@@ -33,7 +33,6 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
 
 
     return <Box onTouchStart={touchstart} onTouchEnd={touchend}>
-        API_ENDPOINT is {process.env.API_ENDPOINT}
         <Stack justifyContent="center" direction="row">
             <div style={{
                 display: 'flex',
