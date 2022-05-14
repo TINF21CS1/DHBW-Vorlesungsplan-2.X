@@ -9,17 +9,9 @@ datasource db {
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
+  id    String    @id @default(auto()) @map("_id") @db.ObjectId
   email String @unique
   name String?
   password String?
   salt String
-  role  Role[]
-}
-
-model Role {
-  id     Int    @id @default(autoincrement())
-  userId Int?
-  user   User?  @relation(fields: [userId], references: [id])
-  role   String
 }
