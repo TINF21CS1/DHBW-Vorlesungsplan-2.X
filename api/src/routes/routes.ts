@@ -23,6 +23,9 @@ function routes(app: Express){
             res.status(404).json({error: 'Error'})
         })
     })
+    app.post("/api/token", (req: Request, res: Response) => {
+
+    })
     //app.delete("/api/user")
 
 }   
