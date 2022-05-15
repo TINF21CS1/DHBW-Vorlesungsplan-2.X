@@ -1,43 +1,25 @@
-import express, { Express } from 'express';
+import * as express from 'express';
 import { PrismaClient } from '@prisma/client';
-import helmet from 'helmet';
-import routes from "./routes/routes"
-import swaggerUi from 'swagger-ui-express';
-import { RegisterRoutes } from '../tsoa/routes';
-import { getRoutes } from './app/server-status/server.status.service';
+import * as morgan from 'morgan';
+import * as helmet from 'helmet'
+import * as swaggerUi from 'swagger-ui-express';
+import { RegisterRoutes } from './routes/routes';
 
-const app: Express = express();
-
-/************************************************************************************
- *                              Basic Express Middlewares
- ***********************************************************************************/
+const app: express.Application = express();
 
 app.set('json spaces', 4);
 app.use(express.json());
+app.use(morgan("dev"));
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+app.use(helmet());
 
-// Handle security and origin in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(helmet());
-}
+app.use("/api", swaggerUi.serve,swaggerUi.setup(undefined, {
+  swaggerOptions: {url:"../swagger.json"},
+}));
 
-function removeFramefuard(req, res, next) {
-  req.removeHeader('X-Frame-Options') //TODO: Disable X-Frame-OPtions in favor of CSP-frame ancestor. Macht Helmet automatisch.
-  next()
-}
+RegisterRoutes(app);
 
-/************************************************************************************
- *                               Register all routes
- ***********************************************************************************/
-
-//RegisterRoutes(app);
-
-//nicht in Produktion!
-//app.use("/docs", swaggerUi.serve, async (req: express.Request, res: express.Response) => {
-//  return res.send(swaggerUi.generateHTML(await import("../tsoa/swagger.json")));
-//});
-
-routes(app); 
 
 
 
@@ -55,4 +37,4 @@ app.use(function notFoundHandler(_req, res: express.Response) {
 });
 
 export const prisma = new PrismaClient();
-export default app;
+export {app};

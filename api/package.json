@@ -10,7 +10,7 @@
     "predev": "yarn prisma:sync",
     "dev": "env-cmd -f .env.dev concurrently \"yarn tsoa:generate_\" \"yarn prisma:sync_\" \"yarn start:dev\"",
     "prebuild": "rimraf ./build && yarn tsoa:generate && yarn prisma:sync",
-    "build": "tsc",
+    "build": "tsc && ts",
     "tsoa:generate_": "nodemon -w src -w prisma -e ts _generate-tsoa.js",
     "tsoa:generate": "node _generate-tsoa.js",
     "prisma:sync_": "env-cmd -f .env.dev nodemon -w prisma -e prisma,ts _sync-prisma.js",
@@ -23,11 +23,12 @@
     "typescript"
   ],
   "devDependencies": {
+    "@prisma/client": "^3.14.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.5.1",
     "@types/morgan": "^1.9.3",
-    "@types/node": "^17.0.32",
+    "@types/node": "^17.0.33",
     "@types/swagger-ui-express": "^4.1.2",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
@@ -37,11 +38,11 @@
     "eslint": "^7.32.0",
     "jest": "^28.1.0",
     "nodemon": "^2.0.16",
+    "prisma": "^3.14.0",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4"
   },
   "dependencies": {
-    "@prisma/client": "^3.14.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "env-cmd": "^10.1.0",
@@ -50,8 +51,10 @@
     "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
-    "prisma": "^3.14.0",
-    "swagger-ui-express": "^4.1.6",
-    "tsoa": "^3.5.2"
-  }
+    "swagger-ui-express": "^4.4.0",
+    "tsoa": "^3.14.1",
+    "yarn": "^1.22.18"
+  },
+  "author": "",
+  "license": "ISC"
 }
