@@ -1,11 +1,11 @@
-import * as express from 'express';
+import express from 'express';
 import { PrismaClient } from '@prisma/client';
-import * as morgan from 'morgan';
-import * as helmet from 'helmet'
+import morgan from 'morgan';
+import helmet from 'helmet'
 import * as swaggerUi from 'swagger-ui-express';
 import { RegisterRoutes } from './routes/routes';
 
-const app: express.Application = express();
+const app = express();
 
 app.set('json spaces', 4);
 app.use(express.json());
@@ -14,7 +14,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
-app.use("/api", swaggerUi.serve,swaggerUi.setup(undefined, {
+app.use("/docs", swaggerUi.serve,swaggerUi.setup(undefined, {
   swaggerOptions: {url:"../swagger.json"},
 }));
 

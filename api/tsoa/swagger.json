@@ -44,6 +44,60 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/api/server-status": {
+			"get": {
+				"operationId": "GetServerStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"serverTime": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"serverTime",
+										"status"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Server Status"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/server-status/routes": {
+			"get": {
+				"operationId": "GetServerRoutes",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Server Status"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/api/user-permission/get-all": {
 			"get": {
 				"operationId": "GetAllUser",
@@ -243,60 +297,6 @@
 						}
 					}
 				]
-			}
-		},
-		"/api/server-status": {
-			"get": {
-				"operationId": "GetServerStatus",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"serverTime": {
-											"type": "string"
-										},
-										"status": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"serverTime",
-										"status"
-									],
-									"type": "object"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Server Status"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/api/server-status/routes": {
-			"get": {
-				"operationId": "GetServerRoutes",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Server Status"
-				],
-				"security": [],
-				"parameters": []
 			}
 		}
 	},

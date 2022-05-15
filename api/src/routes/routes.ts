@@ -1,32 +1,10 @@
-import * as express from "express";
+import {Express, Request, Response} from "express";
 import { Controller,ValidationService,FieldErrors, ValidateError, TsoaRoute } from "tsoa";
-import prisma from "../app"
+import {UserController} from "../controller/createUserController"
 
-function routes(app: Express){
-    /**
-     * @openapi 
-     * /test
-     * for postman... -> pls no swagger
-     */
-    app.get("/api/user", (req: Request, res: Response) =>{
-        prisma.user.findMany.then((users)=>{
-            res.status(200).json({users})
-        }).catch((err)=>{
-            res.status(404).json({error: 'Error'})
-        })
-    }
-    app.post("/api/user", (req: Request, res: Response) => {
-        const {email, name} = req.body
+const userController = new UserController();
 
-        prisma.user.create({data: {email,name}}).then((user) => {
-            res.status(200).json({user})
-        }).catch((err) => {
-            res.status(404).json({error: 'Error'})
-        })
-    })
-    app.post("/api/token", (req: Request, res: Response) => {
-
-    })
-    //app.delete("/api/user")
-
-}   
+export function RegisterRoutes(app: Express) {
+    app.get('/user',(req:Request,res:Response) => userController.createUser
+    );
+ }
