@@ -8,15 +8,28 @@
 		"schemas": {
 			"User": {
 				"properties": {
+					"salt": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string",
+						"nullable": true
+					},
+					"name": {
+						"type": "string",
+						"nullable": true
+					},
 					"email": {
 						"type": "string"
 					},
 					"id": {
-						"type": "number",
-						"format": "double"
+						"type": "string"
 					}
 				},
 				"required": [
+					"salt",
+					"password",
+					"name",
 					"email",
 					"id"
 				],

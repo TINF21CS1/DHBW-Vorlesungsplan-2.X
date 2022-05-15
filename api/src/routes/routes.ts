@@ -1,4 +1,5 @@
-import {Express, Request, Response} from "express";
+import * as express from "express";
+import { Controller,ValidationService,FieldErrors, ValidateError, TsoaRoute } from "tsoa";
 import prisma from "../app"
 
 function routes(app: Express){
