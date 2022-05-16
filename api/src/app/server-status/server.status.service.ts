@@ -1,4 +1,4 @@
-import app from '../../app';
+import {app} from '../../app';
 
 export const getRoutes = () => {
   return new Promise<Array<any>>((resolve, reject) => {

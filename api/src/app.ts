@@ -14,9 +14,10 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
-app.use("/docs", swaggerUi.serve,swaggerUi.setup(undefined, {
-  swaggerOptions: {url:"../swagger.json"},
-}));
+import swaggerDoc from "../swagger.json"
+
+//mit seinem bspw. mit undefined ein Fehler. So geht es aber...
+app.use("/docs", swaggerUi.serve,swaggerUi.setup(swaggerDoc));
 
 RegisterRoutes(app);
 

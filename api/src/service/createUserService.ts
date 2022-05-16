@@ -2,15 +2,16 @@ import {IUser} from "../models/IUser"
 import {prisma} from "../app"
 
 class UserService {
-    public async createUser(body: any): Promise<IUser> {
+    public async createUser(body: Request): Promise<IUser> {
         const user = await prisma.user.create({
             data:{
                 name:"",
                 email:"",
                 salt:"",
+                password:""
             }
         })
-        return user
+        return user as IUser;
     }
 }
 export {UserService}

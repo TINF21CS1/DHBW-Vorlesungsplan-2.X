@@ -11,7 +11,8 @@ export class UserController {
         try {
             const userService = new UserService();
             const user = await userService.createUser(req.body);
-            return res.send(omit(user.toJSON(), "test"));
+            return res.status(200).json(user);
+            //return res.send(omit(user));
         }catch(e) {
             return res.status(500);
         }

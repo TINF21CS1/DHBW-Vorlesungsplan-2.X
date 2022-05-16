@@ -1,7 +1,7 @@
 const { execSync } = require("child_process");
 
 execSync("prisma generate", log);
-execSync("prisma migrate dev", log);
+//execSync("prisma deploy dev", log);
 
 function log(error, stdout, stderr) {
   if (error) {
