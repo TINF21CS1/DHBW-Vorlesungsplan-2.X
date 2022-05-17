@@ -7,12 +7,12 @@ interface PingResponse {
 }
 
 @Tags("User Handler")
-@Route("ping")
+@Route("status")
 export default class UserController{
     @Get("/")
     public async createUser(): Promise<PingResponse> {
         return {
-            message: "pong",
+            message: "Ok :)",
         };
 
     }

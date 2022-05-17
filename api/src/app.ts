@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import morgan from 'morgan';
 import helmet from 'helmet'
 import * as swaggerUi from 'swagger-ui-express';
-import Router from './routes';
+import Router from './routes/route';
 
 const app = express();
 
