@@ -3,24 +3,27 @@ import { PrismaClient } from '@prisma/client';
 import morgan from 'morgan';
 import helmet from 'helmet'
 import * as swaggerUi from 'swagger-ui-express';
-import { RegisterRoutes } from './routes/routes';
+import Router from './routes';
 
 const app = express();
 
 app.set('json spaces', 4);
 app.use(express.json());
-app.use(morgan("dev"));
+app.use(morgan("tiny"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
-import swaggerDoc from "../swagger.json"
-
 //mit seinem bspw. mit undefined ein Fehler. So geht es aber...
-app.use("/docs", swaggerUi.serve,swaggerUi.setup(swaggerDoc));
+app.use("/docs",
+ swaggerUi.serve,
+ swaggerUi.setup(undefined, {
+   swaggerOptions: {
+     url: "../swagger.json"
+   }
+ }));
 
-RegisterRoutes(app);
-
+app.use(Router); //TODO: RegisterRoutes
 
 
 
