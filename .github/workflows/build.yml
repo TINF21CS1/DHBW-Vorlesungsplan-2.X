@@ -10,9 +10,12 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  build:
+  build-front:
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'front'
 
     strategy:
       matrix:
@@ -20,19 +23,15 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - working-directory: ./front/
-      name: Use Node.js ${{ matrix.node-version }}
+    - uses: actions/checkout@v3/
+    - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-    - working-directory: ./front/
-      run: rm -rf node_modules && yarn install --frozen-lockfile
-    - working-directory: ./front
-      run: yarn test
-    - working-directory: ./front
-      run: yarn build --if-present
+    - run: rm -rf node_modules && yarn install --frozen-lockfile
+    - run: yarn test
+    - run: yarn build --if-present
     - name: Archive production artifacts
       uses: actions/upload-artifact@v3
       with:
