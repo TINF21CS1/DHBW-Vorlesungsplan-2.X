@@ -27,7 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
     - working-directory: ./front/
-    - run: rm -rf node_modules && yarn install --frozen-lockfile
+      run: rm -rf node_modules && yarn install --frozen-lockfile
     - working-directory: ./front
       run: yarn test
     - working-directory: ./front
