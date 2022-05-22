@@ -1,18 +1,16 @@
-/*import {prisma} from "../app"
+import {prisma} from "../app"
 import { User } from '@prisma/client';
 
-class UserService {
-    public async createUser(body: any): Promise<User> {
-        const user = await prisma.user.create({
-            data:{
-                name:"",
-                email:"",
-                salt:"",
-                password:""
-            }
-        })
-        return user;
-        //return user as IUser;
+export default class UserService {
+    public async fetchUsers(): Promise<Array<User>> {
+        const allUsers = await prisma.user.findMany()
+        return allUsers;
+    }
+
+    public async createUser(user: User): Promise<User> {
+        await prisma.$connect()
+        const users= await prisma.user.create({data:user})
+        return users;
     }
 }
-export {UserService}*/
+export {UserService}

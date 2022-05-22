@@ -1,6 +1,4 @@
 import {Tags, Get, Route} from "tsoa";
-//import {omit} from "lodash";
-//import { UserService } from "../service/createUserService";
 
 interface StatusResponse {
     message: string;

@@ -19,7 +19,7 @@ app.use("/docs",
  swaggerUi.serve,
  swaggerUi.setup(undefined, {
    swaggerOptions: {
-     url: "../swagger.json"
+     url: "./tsoa/swagger.json"
    }
  }));
 

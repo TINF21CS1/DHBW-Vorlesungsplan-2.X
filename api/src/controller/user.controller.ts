@@ -1,28 +1,22 @@
-import {Tags, Get, Route} from "tsoa";
+import {Tags, Get, Route, Post, Body} from "tsoa";
 //import {omit} from "lodash";
 import {prisma} from "../app"
-
-interface StatusResponse {
-    message: string;
-}
+import UserService from "../service/user.service";
+import { User } from '@prisma/client';
 
 @Tags("User Handler")
 @Route("user")
 export default class UserController{
     @Get("/")
-    public async createUser(): Promise<StatusResponse> {
+    public async fetchUsers(): Promise<Array<User>> {
+        const service = new UserService();
+        return service.fetchUsers();
+    }
 
-       const user= await prisma.user.create({
-            data:{
-                name:"test",
-                email:"test",
-                salt:"test",
-                pass:"test"
-            }
-        })
-        return {
-            message: "Running...",
-        };
+    @Post("/")
+    public async createUser(@Body() body: User): Promise<User> {
+        const service = new UserService();
+        return service.createUser(body);
     }
 }
 
