@@ -13,8 +13,14 @@ router.get("/status", async (_req, res) => {
 
 router.get("/user", async (req, res) => {
     const controller = new UserController();
-    const response = await controller.createUser();
+    const response = await controller.fetchUsers();
     return res.status(200).send(response);
+});
+
+router.post("/user", async (req, res) => {
+    const controller = new UserController();
+    const response = await controller.createUser(req.body);
+    return res.send(response);
 });
 
 export default router;
