@@ -1,20 +1,28 @@
 import {Tags, Get, Route} from "tsoa";
 //import {omit} from "lodash";
-//import { UserService } from "../service/createUserService";
+import {prisma} from "../app"
 
-interface PingResponse {
+interface StatusResponse {
     message: string;
 }
 
 @Tags("User Handler")
-@Route("status")
+@Route("user")
 export default class UserController{
     @Get("/")
-    public async createUser(): Promise<PingResponse> {
-        return {
-            message: "Ok :)",
-        };
+    public async createUser(): Promise<StatusResponse> {
 
+       const user= await prisma.user.create({
+            data:{
+                name:"test",
+                email:"test",
+                salt:"test",
+                pass:"test"
+            }
+        })
+        return {
+            message: "Running...",
+        };
     }
 }
 
