@@ -13,8 +13,7 @@
     "build": "tsc -p .",
     "tsoa:generate_": "nodemon -w src -w prisma -e ts _generate-tsoa.js",
     "tsoa:generate": "node _generate-tsoa.js",
-    "prisma:sync_": "env-cmd -f .env.dev nodemon -w prisma -e prisma,ts _sync-prisma.js",
-    "prisma:sync": "env-cmd -f .env.dev node _sync-prisma.js",
+    "prisma:sync": "prisma generate",
     "prisma:studio": "env-cmd -f .env.dev yarn prisma studio",
     "test": "jest"
   },
@@ -39,6 +38,7 @@
     "eslint": "^7.32.0",
     "jest": "^28.1.0",
     "nodemon": "^2.0.16",
+    "prettier": "2.6.2",
     "prisma": "^3.14.0",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4"

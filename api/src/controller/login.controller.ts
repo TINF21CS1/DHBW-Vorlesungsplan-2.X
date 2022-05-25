@@ -6,7 +6,7 @@ import { User } from '@prisma/client';
 @Route("login")
 export default class LoginController{
     @Post("/")
-    public async login(@Body() body: User): Promise<User|any> {
+    public async login(@Body() body: User): Promise<String> {
         const service = new LoginService();
         return service.login(body);
     }

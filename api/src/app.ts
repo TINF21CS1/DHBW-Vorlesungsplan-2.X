@@ -37,4 +37,4 @@ app.use(function notFoundHandler(_req, res: express.Response) {
 });
 
 export const prisma = new PrismaClient();
-export {app};
+export default app;

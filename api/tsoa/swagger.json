@@ -23,9 +23,6 @@
 					"pass": {
 						"type": "string"
 					},
-					"salt": {
-						"type": "string"
-					},
 					"email": {
 						"type": "string"
 					},
@@ -39,7 +36,6 @@
 				},
 				"required": [
 					"pass",
-					"salt",
 					"email",
 					"name",
 					"id"
@@ -78,29 +74,6 @@
 			}
 		},
 		"/user": {
-			"get": {
-				"operationId": "FetchUsers",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/User"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"User Handler"
-				],
-				"security": [],
-				"parameters": []
-			},
 			"post": {
 				"operationId": "CreateUser",
 				"responses": {
@@ -109,12 +82,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"anyOf": [
-										{
-											"$ref": "#/components/schemas/User"
-										},
-										{}
-									]
+									"type": "string"
 								}
 							}
 						}
@@ -146,12 +114,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"anyOf": [
-										{
-											"$ref": "#/components/schemas/User"
-										},
-										{}
-									]
+									"type": "string"
 								}
 							}
 						}

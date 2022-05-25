@@ -5,15 +5,13 @@ const jwt = require('jsonwebtoken');
 
 export default class LoginService {
 
-    public async login(user: User): Promise<User|any> {
+    public async login(user: User): Promise<String> {
       await prisma.$connect();
       const exists = await prisma.user.findFirst({
           where: {
             email: user.email
           },
         });
-        console.log(exists?.pass + "|" + user.pass)
-        console.log(await bcrypt.compare(exists?.pass, user.pass))
       if(!exists||!(await bcrypt.compare(exists?.pass, user.pass)))
         return "Email or Password wrong..."; //hier ratelimit??
 
@@ -24,8 +22,7 @@ export default class LoginService {
             expiresIn: "2h",
           }
         );
-        exists.salt = token; //Rename to token...
-      return exists;
+      return token;
   }
 }
 
