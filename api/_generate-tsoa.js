@@ -7,7 +7,8 @@ const { generateRoutes, generateSpec } = require('tsoa');
     noImplicitAdditionalProperties: "throw-on-extras",
     controllerPathGlobs: ["src/**/*.controller.ts"],
     outputDirectory: "tsoa",
-    specVersion: 3
+    specVersion: 3,
+    swagger: "2.0"
   };
 
   const routeOptions = {
@@ -17,6 +18,7 @@ const { generateRoutes, generateSpec } = require('tsoa');
     noImplicitAdditionalProperties: "throw-on-extras",
     controllerPathGlobs: ["src/**/*.controller.ts"],
     routesDir: "tsoa",
+    specVersion: 3
   };
 
   await generateSpec(specOptions);

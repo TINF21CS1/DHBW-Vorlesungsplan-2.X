@@ -15,13 +15,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
 //mit seinem bspw. mit undefined ein Fehler. So geht es aber...
-app.use("/docs",
- swaggerUi.serve,
- swaggerUi.setup(undefined, {
-   swaggerOptions: {
-     url: "./tsoa/swagger.json"
-   }
- }));
+app.use("/docs", swaggerUi.serve, async (req: express.Request, res: express.Response) => {
+  return res.send(swaggerUi.generateHTML(await import("../tsoa/swagger.json")));
+});
 
 app.use(Router); //TODO: RegisterRoutes
 
