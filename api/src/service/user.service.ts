@@ -2,6 +2,7 @@ import {prisma} from "../app"
 import { User } from '@prisma/client';
 const bcrypt = require('bcrypt'); //idk warum mit import nicht will...
 const jwt = require('jsonwebtoken');
+import { ObjectId } from 'bson'
 
 export default class UserService {
 
@@ -15,6 +16,8 @@ export default class UserService {
         if(exists)
           return "Already Exists";
         user.pass = await bcrypt.hash(user.pass, 10);
+        const newID = new ObjectId();
+        user.id = newID.toString();
         await prisma.user.create({data:user})
         const token = jwt.sign(
             { user_id: user.id, email: user.email },
