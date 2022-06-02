@@ -50,62 +50,64 @@ export async function parse_ical(course_uid: number) {
     }
   });
 
-  await client.$transaction(async (client) => {
-    for (let k in data) {
-      if (data[k].type == "VEVENT") {
-        const ev = data[k] as VEvent;
-        const start = zonedTimeToUtc(ev.start, timezone);
-        const end = zonedTimeToUtc(ev.end, timezone);
-        const class_name = mapping[ev.summary];
-        let class_ = await client.class.findFirst({
-          where: {
+  // transcation is disabled because 
+  // it sometimes expires before parsing is done
+  // await client.$transaction(async (client) => {
+  for (let k in data) {
+    if (data[k].type == "VEVENT") {
+      const ev = data[k] as VEvent;
+      const start = zonedTimeToUtc(ev.start, timezone);
+      const end = zonedTimeToUtc(ev.end, timezone);
+      const class_name = mapping[ev.summary];
+      let class_ = await client.class.findFirst({
+        where: {
+          name: class_name,
+          course: {
+            uid: course_uid
+          }
+        }
+      });
+      if (class_ == null) {
+        class_ = await client.class.create({
+          data: {
             name: class_name,
             course: {
-              uid: course_uid
-            }
-          }
-        });
-        if (class_ == null) {
-          class_ = await client.class.create({
-            data: {
-              name: class_name,
-              course: {
-                connect: {
-                  uid: course_uid
-                }
-              }
-            }
-          });
-        }
-        await client.lecture.upsert({
-          where: {
-            ical_uid: ev.uid,
-          },
-          update: {
-            location: ev.location,
-            start: start,
-            end: end,
-            summary: ev.summary,
-            class: {
               connect: {
-                id: class_.id
-              }
-            }
-          },
-          create: {
-            ical_uid: ev.uid,
-            location: ev.location,
-            start: start,
-            end: end,
-            summary: ev.summary,
-            class: {
-              connect: {
-                id: class_.id
+                uid: course_uid
               }
             }
           }
         });
       }
+      await client.lecture.upsert({
+        where: {
+          ical_uid: ev.uid,
+        },
+        update: {
+          location: ev.location,
+          start: start,
+          end: end,
+          summary: ev.summary,
+          class: {
+            connect: {
+              id: class_.id
+            }
+          }
+        },
+        create: {
+          ical_uid: ev.uid,
+          location: ev.location,
+          start: start,
+          end: end,
+          summary: ev.summary,
+          class: {
+            connect: {
+              id: class_.id
+            }
+          }
+        }
+      });
     }
-  });
+  }
+  // });
 }

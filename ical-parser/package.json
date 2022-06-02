@@ -12,7 +12,7 @@
     "start": "node ./build/index.js",
     "dev": "env-cmd -f .env.dev node ./build/index.js",
     "build": "tsc -p .",
-    "prisma:sync": "prisma generate",
+    "prisma:sync": "env-cmd -f .env.dev prisma generate",
     "prisma:studio": "env-cmd -f .env.dev yarn prisma studio",
     "pretest": "yarn build",
     "_fixme_test": "For some reason jest doesn't work with env-cmd",
