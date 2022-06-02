@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  front:
+    build: ./front
+    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan2-front:develop
+    ports:
+      - "80:80"
+  
+  api:
+    build: ./api
+    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan2-api:develop

@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  front:
+    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan2-front:latest
+    ports:
+      - "80:80"
+  
+  api:
+    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan2-api:latest
