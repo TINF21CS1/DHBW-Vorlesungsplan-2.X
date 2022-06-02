@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Lecture {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  ical_uid String   @unique
+  summary  String
+  class    Class    @relation(fields: [classId], references: [id])
+  classId  String   @map("classId")
+  location String? // FIXME: Maybe Location should be a real location type? Or should we use a string?
+  start    DateTime
+  end      DateTime
+}
+
+model Class {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  course   Course?   @relation(fields: [courseId], references: [id])
+  courseId String?   @db.ObjectId
+  Lecture  Lecture[]
+}
+
+model Course {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  uid     Int     @unique
+  classes Class[]
+}
