@@ -3,6 +3,6 @@ FROM node
 COPY . /app
 WORKDIR /app
 
-RUN yarn install && yarn build && yarn global add serve
+RUN yarn install && yarn build
 
-CMD serve -s build
+CMD yarn start
