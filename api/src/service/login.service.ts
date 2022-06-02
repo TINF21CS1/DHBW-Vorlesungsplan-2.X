@@ -12,8 +12,9 @@ export default class LoginService {
             email: user.email
           },
         });
-      if(!exists||!(await bcrypt.compare(exists.pass, user.pass))) // kein fastcall, wegen Security!
+      if(!exists||!(await bcrypt.compare(exists?.pass, user.pass)))
         return "Email or Password wrong..."; //hier ratelimit??
+
       const token = jwt.sign(
           { user_id: user.id, email: user.email },
           process.env.TOKEN_KEY,
