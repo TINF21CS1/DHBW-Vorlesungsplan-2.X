@@ -5,3 +5,5 @@ logs/
 .env.prod
 
 src/app/.notes
+
+package-lock.json
