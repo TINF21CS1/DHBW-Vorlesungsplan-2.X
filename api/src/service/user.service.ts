@@ -8,13 +8,14 @@ export default class UserService {
 
     public async createUser(user: User): Promise<String> {
         await prisma.$connect();
+        const regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
         const exists = await prisma.user.findFirst({
             where: {
               email: user.email,
             },
           })
-        if(exists)
-          return "Already Exists";
+        if(exists||regexp.test(user.email))
+          return "Something went wrong!";
         user.pass = await bcrypt.hash(user.pass, 10);
         const newID = new ObjectId();
         user.id = newID.toString();
