@@ -4,7 +4,9 @@ import date_fns_tz from "date-fns-tz";
 const { zonedTimeToUtc } = date_fns_tz;
 import client from "./db.js";
 
-export function canonicalize_module_names(module_names: Set<string>): { [module_name: string]: string } {
+export function canonicalize_module_names(module_names: Set<string>): {
+  [module_name: string]: string;
+} {
   const mapping: { [module_name: string]: string } = {};
   for (let module_name of module_names) {
     // FIXME: Find the "actual" module name (i. e. strip '(online)' or similar junk)
@@ -29,7 +31,7 @@ export async function parse_ical(course_uid: number) {
   // FIXME: This loop explicitly drops any VTimezone information. Need to adjust the times in the data to be UTC.
   let module_names: Set<string> = new Set();
   for (let k in data) {
-    if (data[k].type == 'VEVENT') {
+    if (data[k].type == "VEVENT") {
       const ev = data[k] as VEvent;
       if (ev.summary == null) {
         console.error("No summary for event: " + JSON.stringify(ev));
@@ -46,11 +48,11 @@ export async function parse_ical(course_uid: number) {
         course: {
           uid: course_uid,
         },
-      }
-    }
+      },
+    },
   });
 
-  // transcation is disabled because 
+  // transcation is disabled because
   // it sometimes expires before parsing is done
   // await client.$transaction(async (client) => {
   for (let k in data) {
@@ -63,9 +65,9 @@ export async function parse_ical(course_uid: number) {
         where: {
           name: module_name,
           course: {
-            uid: course_uid
-          }
-        }
+            uid: course_uid,
+          },
+        },
       });
       if (module == null) {
         module = await client.module.create({
@@ -73,11 +75,11 @@ export async function parse_ical(course_uid: number) {
             name: module_name,
             course: {
               connect: {
-                uid: course_uid
-              }
-            }
-          }
-        }); 
+                uid: course_uid,
+              },
+            },
+          },
+        });
       }
       if (module == null) {
         console.error("Could not find or create module: " + module_name);
@@ -94,9 +96,9 @@ export async function parse_ical(course_uid: number) {
           summary: ev.summary,
           module: {
             connect: {
-              id: module.id
-            }
-          }
+              id: module.id,
+            },
+          },
         },
         create: {
           ical_uid: ev.uid,
@@ -106,10 +108,10 @@ export async function parse_ical(course_uid: number) {
           summary: ev.summary,
           module: {
             connect: {
-              id: module.id
-            }
-          }
-        }
+              id: module.id,
+            },
+          },
+        },
       });
     }
   }

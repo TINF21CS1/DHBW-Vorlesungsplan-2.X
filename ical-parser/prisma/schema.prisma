@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["interactiveTransactions"]
 }
 
@@ -12,8 +12,8 @@ model Lecture {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   ical_uid String   @unique
   summary  String
-  module    Module    @relation(fields: [moduleId], references: [id])
-  moduleId  String   @map("moduleId")
+  module   Module   @relation(fields: [moduleId], references: [id])
+  moduleId String   @map("moduleId")
   location String? // FIXME: Maybe Location should be a real location type? Or should we use a string?
   start    DateTime
   end      DateTime
@@ -28,8 +28,8 @@ model Module {
 }
 
 model Course {
-  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
   name    String
-  uid     Int     @unique
+  uid     Int      @unique
   modules Module[]
 }
