@@ -4,11 +4,11 @@ import date_fns_tz from "date-fns-tz";
 const { zonedTimeToUtc } = date_fns_tz;
 import client from "./db.js";
 
-export function canonicalize_class_names(class_names: Set<string>): { [class_name: string]: string } {
-  const mapping: { [class_name: string]: string } = {};
-  for (let class_name of class_names) {
-    // FIXME: Find the "actual" class name (i. e. strip '(online)' or similar junk)
-    mapping[class_name] = class_name;
+export function canonicalize_module_names(module_names: Set<string>): { [module_name: string]: string } {
+  const mapping: { [module_name: string]: string } = {};
+  for (let module_name of module_names) {
+    // FIXME: Find the "actual" module name (i. e. strip '(online)' or similar junk)
+    mapping[module_name] = module_name;
   }
   return mapping;
 }
@@ -27,7 +27,7 @@ export async function parse_ical(course_uid: number) {
   }
 
   // FIXME: This loop explicitly drops any VTimezone information. Need to adjust the times in the data to be UTC.
-  let class_names: Set<string> = new Set();
+  let module_names: Set<string> = new Set();
   for (let k in data) {
     if (data[k].type == 'VEVENT') {
       const ev = data[k] as VEvent;
@@ -35,14 +35,14 @@ export async function parse_ical(course_uid: number) {
         console.error("No summary for event: " + JSON.stringify(ev));
         continue;
       }
-      class_names.add(ev.summary);
+      module_names.add(ev.summary);
     }
   }
-  let mapping = canonicalize_class_names(class_names);
+  let mapping = canonicalize_module_names(module_names);
 
   await client.lecture.deleteMany({
     where: {
-      class: {
+      module: {
         course: {
           uid: course_uid,
         },
@@ -58,26 +58,30 @@ export async function parse_ical(course_uid: number) {
       const ev = data[k] as VEvent;
       const start = zonedTimeToUtc(ev.start, timezone);
       const end = zonedTimeToUtc(ev.end, timezone);
-      const class_name = mapping[ev.summary];
-      let class_ = await client.class.findFirst({
+      const module_name = mapping[ev.summary];
+      let module = await client.module.findFirst({
         where: {
-          name: class_name,
+          name: module_name,
           course: {
             uid: course_uid
           }
         }
       });
-      if (class_ == null) {
-        class_ = await client.class.create({
+      if (module == null) {
+        module = await client.module.create({
           data: {
-            name: class_name,
+            name: module_name,
             course: {
               connect: {
                 uid: course_uid
               }
             }
           }
-        });
+        }); 
+      }
+      if (module == null) {
+        console.error("Could not find or create module: " + module_name);
+        continue;
       }
       await client.lecture.upsert({
         where: {
@@ -88,9 +92,9 @@ export async function parse_ical(course_uid: number) {
           start: start,
           end: end,
           summary: ev.summary,
-          class: {
+          module: {
             connect: {
-              id: class_.id
+              id: module.id
             }
           }
         },
@@ -100,9 +104,9 @@ export async function parse_ical(course_uid: number) {
           start: start,
           end: end,
           summary: ev.summary,
-          class: {
+          module: {
             connect: {
-              id: class_.id
+              id: module.id
             }
           }
         }

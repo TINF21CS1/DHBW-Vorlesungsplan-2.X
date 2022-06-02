@@ -12,14 +12,14 @@ model Lecture {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   ical_uid String   @unique
   summary  String
-  class    Class    @relation(fields: [classId], references: [id])
-  classId  String   @map("classId")
+  module    Module    @relation(fields: [moduleId], references: [id])
+  moduleId  String   @map("moduleId")
   location String? // FIXME: Maybe Location should be a real location type? Or should we use a string?
   start    DateTime
   end      DateTime
 }
 
-model Class {
+model Module {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   name     String
   course   Course?   @relation(fields: [courseId], references: [id])
@@ -31,5 +31,5 @@ model Course {
   id      String  @id @default(auto()) @map("_id") @db.ObjectId
   name    String
   uid     Int     @unique
-  classes Class[]
+  modules Module[]
 }
