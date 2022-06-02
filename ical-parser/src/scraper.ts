@@ -1,7 +1,7 @@
 import { BASE_URL } from "./config.js";
 import { JSDOM } from "jsdom";
 import { Course } from "@prisma/client";
-import prisma from "./db.js";
+import client from "./db.js";
 
 type CourseDict = { [course: string]: number };
 
@@ -31,10 +31,9 @@ export async function fetch_courses(): Promise<CourseDict> {
   return courses;
 }
 
-export async function upsert_courses_in_db() {
-  let courses = await fetch_courses();
+export async function upsert_courses_in_db(courses: CourseDict) {
   for (let course_name in courses) {
-    prisma.course.upsert({
+    await client.course.upsert({
       where: {
         uid: courses[course_name],
       },
