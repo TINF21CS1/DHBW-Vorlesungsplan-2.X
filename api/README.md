@@ -35,3 +35,25 @@ Now init the replica set (rs):
 ```
 $ rs.initiate(rsconfig)
 ```
+
+# Docker
+Because the developers of prisma are unwilling to support MongoDB with replica Set as optional (https://github.com/prisma/prisma/issues/8266#:~:text=MongoDB%20only%20allows%20you%20to%20start%20a%20transaction,the%20requirement%20of%20needing%20a%20replica%20set%20configured.), you are forced to create a replica Set (Cluster) to start a transaction. To avoid unnecessary complexity, you can just deploy your MongoDB with only one Replica-Set:
+```docker-compose.yml```
+```
+version: '3'
+
+services:
+  mongo:
+    container_name: mongo
+    image: mongo:4
+    command: --replSet rs0
+    ports:
+      - '27017:27017'
+      - '28017:28017'
+    volumes:
+      - ./data/mongo:/data/db
+```
+
+Now execute: ```$ docker-compose exec mongo mongo --eval "rs.initiate({_id: 'rs0', members: [{_id: 0, host: 'localhost:27017'}]});"```
+
+Keep in mind that you need to create a db+user first with db.createUser, to use MongoDB.
