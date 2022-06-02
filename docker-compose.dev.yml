@@ -6,6 +6,8 @@ services:
     image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan2-front:develop
     ports:
       - "80:80"
+    env_file:
+      - ./api/.env.dev
   
   api:
     build: ./api

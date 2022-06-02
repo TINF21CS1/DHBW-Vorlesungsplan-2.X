@@ -61,5 +61,6 @@
     "yarn": "^1.22.18"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "homepage": "/api/"
 }
