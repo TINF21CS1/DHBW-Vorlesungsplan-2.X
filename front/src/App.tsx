@@ -4,7 +4,7 @@ import Calendar from './Calendar';
 import Login from './Login';
 import Settings from './Settings';
 import Nav from './components/Nav';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 const darkTheme = createTheme({
@@ -29,6 +29,7 @@ function App() {
           <Route path='/' element={<Calendar />} />
           <Route path='/login' element={<Login />} />
           <Route path='/settings' element={<Settings />} />
+          <Route path='*' element={<Navigate to="/" />} />
         </Routes>
       </Router>
     </ThemeProvider>
