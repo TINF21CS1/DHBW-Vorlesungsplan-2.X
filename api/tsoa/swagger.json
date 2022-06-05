@@ -20,6 +20,9 @@
 			},
 			"User": {
 				"properties": {
+					"notification": {
+						"type": "boolean"
+					},
 					"pass": {
 						"type": "string"
 					},
@@ -35,6 +38,7 @@
 					}
 				},
 				"required": [
+					"notification",
 					"pass",
 					"email",
 					"name",
@@ -135,6 +139,71 @@
 						}
 					}
 				}
+			}
+		},
+		"/logout": {
+			"get": {
+				"operationId": "LogOut",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Logout Handler"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/calender": {
+			"get": {
+				"operationId": "GetCalender",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Calender2 Controller"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/settings": {
+			"get": {
+				"operationId": "GetSettings",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Setting Handler"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "SetSettings",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Setting Handler"
+				],
+				"security": [],
+				"parameters": []
 			}
 		}
 	},
