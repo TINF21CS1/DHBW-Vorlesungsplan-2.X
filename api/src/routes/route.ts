@@ -6,6 +6,7 @@ import LoginController from "../controller/login.controller";
 import CalenderController from "../controller/calender.controller";
 import LogoutController from "../controller/logout.controller";
 import { prisma } from "@prisma/client";
+import NotificationController from "../controller/notification.controller";
 const router = express.Router();
 
 router.get("/status", async (_req, res) => {
@@ -54,6 +55,26 @@ router.post("/settings", async (req, res) => {
         return res.status(400).json("Malformed Input");
     }
 })
+
+router.get("/notification/:notify", async (req, res) => {
+    try {
+         const controller = new NotificationController();
+         const settings = await controller.setNotification(Boolean(req.params.notify), req.cookies.access_token)
+         return res.status(200).json(settings);
+     }catch{
+         return res.status(400).json("Malformed Input");
+     }
+ })
+
+ router.get("/notification", async (req, res) => {
+     try {
+        const controller = new NotificationController();
+        const settings = await controller.getNotification(req.cookies.access_token)
+        return res.status(200).json(settings);
+     }catch{
+         return res.status(400).json("Malformed Input")
+     }
+ })
 
 router.get("/settings", async (req, res) => {
     try {

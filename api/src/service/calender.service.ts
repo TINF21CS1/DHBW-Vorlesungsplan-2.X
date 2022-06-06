@@ -1,4 +1,5 @@
 import { Lecture } from "@prisma/client";
+import { ObjectId } from "bson";
 import {prisma} from "../app"
 
 export default class CalenderService {
@@ -27,11 +28,11 @@ export default class CalenderService {
               }
             })
             if(!module||module.Lecture.length==0)
-             return "No Module";
-             for (var i = 0; i < module.Lecture.length; i++) {
+                continue;
+             for (var j = 0; j < module.Lecture.length; j++) {
               const lecture = await prisma.lecture.findFirst({
                 where: {
-                  id: module.Lecture[i].id,
+                  id: module.Lecture[j].id,
                   start: {
                     gte: startD,
                   },

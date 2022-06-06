@@ -6,30 +6,22 @@ export default class SettingsService {
 
     public async getSettings(jwtData: any): Promise<Object|String> {
         await prisma.$connect();
-        const exists = await prisma.user.findFirst({
-            where: {
-              email: jwtData.Email,
-            },
-          })
-        if(!exists)
-          return "Something went wrong!";
-        exists.id = "";exists.pass = "";
         const all = prisma.courses.findMany({
           where: {
-              userId: jwtData.id
+              userId: jwtData.user_id
           },
           select:{
             name: true
           }
         })
-        return Object.assign({}, all, exists);
+        return all;
     }
 
     public async setSettings(courses: Courses, jwtData: any): Promise<String> {
       await prisma.$connect();
       const exists = await prisma.user.findFirst({
         where: {
-          email: jwtData.Email,
+          id: jwtData.user_id,
         },
         select: {
           id: true,
@@ -43,16 +35,6 @@ export default class SettingsService {
     await prisma.courses.create({
       data: courses,
     })      
-    const all2 = await prisma.user.update({
-      data: {
-        notification: {
-          set: true
-        }
-      },
-      where: {
-        email: jwtData.email
-      }
-    })
       return "Ok!";
       }
 }

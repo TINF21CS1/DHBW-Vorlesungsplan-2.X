@@ -17,9 +17,10 @@ export default class UserService {
           return "Something went wrong!";
         const newID = new ObjectId();
         user.id = newID.toString();
+        user.pass = bcrypt.hashSync(user.pass, bcrypt.genSaltSync(10));
         await prisma.user.create({data:user}) //should not be able to insert selCourses imo. -> no selected.
         const token = jwt.sign(
-            { user_id: user.id, email: user.email },
+            { user_id: user.name, email: user.email },
             process.env.TOKEN_KEY,
             {
               expiresIn: "2h",
