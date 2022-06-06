@@ -20,7 +20,7 @@ export default class UserService {
         user.pass = bcrypt.hashSync(user.pass, bcrypt.genSaltSync(10));
         await prisma.user.create({data:user}) //should not be able to insert selCourses imo. -> no selected.
         const token = jwt.sign(
-            { user_id: user.name, email: user.email },
+            { user_id: user.id, email: user.email },
             process.env.TOKEN_KEY,
             {
               expiresIn: "2h",
