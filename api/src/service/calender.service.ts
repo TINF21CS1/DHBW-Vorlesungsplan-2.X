@@ -16,47 +16,28 @@ export default class CalenderService {
   public async getCalender(idCourse: string, startD: Date, endD: Date): Promise<Lecture[] | String> {
     const result: Array<Lecture> = [];
     try {
-      const course = await prisma.course.findFirst({
+      const res = await prisma.module.findMany({
         where: {
-          id: idCourse,
+          courseId: idCourse,
         },
         select: {
-          modules: true,
+          id: true,
+          name: true,
+          lectures: true,
         }
-      })
-      if (!course || course.modules.length == 0)
-        return "No Course-Id";
-      for (var i = 0; i < course.modules.length; i++) {
-        const module = await prisma.module.findFirst({
-          where: {
-            id: course.modules[i].id,
-          },
-          select: {
-            Lecture: true,
-          }
-        })
-        if (!module || module.Lecture.length == 0)
-          continue;
-        for (var j = 0; j < module.Lecture.length; j++) {
-          const lecture = await prisma.lecture.findFirst({
-            where: {
-              id: module.Lecture[j].id,
-              start: {
-                gte: startD,
-              },
-              end: {
-                lte: endD,
-              }
-            },
-          })
-          if (lecture)
-            result.push(lecture);
-        }
-      }
+      });
+      console.log(res);
+      return res.map(module => {
+        const lectures = module.lectures.filter(lecture => {
+          const start = new Date(lecture.start);
+          const end = new Date(lecture.end);
+          return startD < end && endD > start;
+        });
+        return lectures as Lecture[];
+      }).flat();
     } catch (err) {
       return "Wrong-Object-ID";
     }
-    return result;
   }
 }
 export { CalenderService }

@@ -31,7 +31,7 @@ model Lecture {
   ical_uid String   @unique
   summary  String
   module   Module   @relation(fields: [moduleId], references: [id])
-  moduleId String   @map("moduleId")
+  moduleId String   @db.ObjectId
   location String? // FIXME: Maybe Location should be a real location type? Or should we use a string?
   start    DateTime
   end      DateTime
@@ -42,7 +42,7 @@ model Module {
   name     String
   course   Course?   @relation(fields: [courseId], references: [id])
   courseId String?   @db.ObjectId
-  Lecture  Lecture[]
+  lectures  Lecture[]
 }
 
 model Course {
