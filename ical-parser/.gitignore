@@ -3,7 +3,3 @@ build/
 logs/
 .env
 .env.prod
-
-src/app/.notes
-
-package-lock.json
