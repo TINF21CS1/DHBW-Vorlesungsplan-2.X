@@ -9,6 +9,12 @@ export default class CalenderController{
     public async getCalender(id: string, start: Date, end: Date): Promise<Lecture[]|String> {
         const service = new CalenderService();
         return service.getCalender(id, start, end);
+    }    
+    
+    @Get("course/list")
+    public async getCourseList(): Promise<Array<{name: string, id: string}>> {
+        const service = new CalenderService();
+        return service.getCourseList();
     }
 }
 

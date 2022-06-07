@@ -19,29 +19,23 @@ const CalendarItem = (props: { event: Event }) => {
 
     return <Card>
         <CardActionArea onClick={handleClickOpen}>
-            {props.event.ignored ? (
-                <Box padding={1}>
-                    <Typography>{props.event.title}</Typography>
-                </Box>
-            ) : (
-                <Box padding={1}>
-                    <Typography variant="h5" component="h3">{props.event.title}</Typography>
-                    <LabeledIcon icon={<AccessTime />} text={format(props.event.start, "HH:mm") + " - " + format(props.event.end, "HH:mm")} />
-                    <LabeledIcon icon={<LocationOn />} text={props.event.location} />
-                    <LabeledIcon icon={<Person />} text={props.event.speaker} />
-                </Box>
-            )}
+            <Box padding={1}>
+                <Typography variant="h5" component="h3">{props.event.summary}</Typography>
+                <LabeledIcon icon={<AccessTime />} text={format(props.event.start, "HH:mm") + " - " + format(props.event.end, "HH:mm")} />
+                { props.event.location.trim() !== "" && <LabeledIcon icon={<LocationOn />} text={props.event.location} /> }
+            </Box>
         </CardActionArea>
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>{props.event.title}</DialogTitle>
+            <DialogTitle>{props.event.summary}</DialogTitle>
             <DialogContent>
                 <DialogContentText>
                     <LabeledIcon icon={<EventRepeat />} text="Dienstag und Donnerstag" />
                     <LabeledIcon icon={<LocationOn />} text={props.event.location} />
-                    <LabeledIcon icon={<Person />} text={props.event.speaker} />
                 </DialogContentText>
                 <FormGroup>
-                    <FormControlLabel control={<Switch defaultChecked={!props.event.ignored} />} label="Im Vorlesungsplan anzeigen" />
+                    { 
+                    // <FormControlLabel control={<Switch defaultChecked={!props.event.ignored} />} label="Im Vorlesungsplan anzeigen"  /> 
+                    }
                     <FormControlLabel control={<Switch />} label="Browser Benachrichtigungen" />
                     <FormControlLabel control={<Switch disabled />} label="E-Mail Benachrichtigungen" />
                 </FormGroup>

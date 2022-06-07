@@ -17,11 +17,11 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
-app.use("/docs", swaggerUi.serve, async (req: express.Request, res: express.Response) => {
+app.use("/api/docs", swaggerUi.serve, async (req: express.Request, res: express.Response) => {
   return res.send(swaggerUi.generateHTML(await import("../tsoa/swagger.json")));
 });
 
-app.use(Router); //TODO: RegisterRoutes
+app.use("/api", Router); //TODO: RegisterRoutes
 
 
 

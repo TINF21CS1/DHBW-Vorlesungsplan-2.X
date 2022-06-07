@@ -41,10 +41,20 @@ router.get("/calender/:course_id/:startDate/:endDate", async (req, res) => {
         const controller = new CalenderController();
         const response = await controller.getCalender(req.params.course_id, new Date(req.params.startDate), new Date(req.params.endDate));
         return res.status(200).json(response);
-    }catch{
-        return res.status(400).json("Malformed Input");
+    } catch (error) {
+        return res.status(400).json("Malformed Input: " + error);
     }
 })
+
+router.get("/calender/course/list", async (req, res) => {
+    try {
+        const controller = new CalenderController();
+        const response = await controller.getCourseList();
+        return res.status(200).json(response);
+    } catch (error) {
+        return res.status(400).json("Malformed Input: " + error);
+    }
+});
 
 router.post("/settings", async (req, res) => {
    try {
