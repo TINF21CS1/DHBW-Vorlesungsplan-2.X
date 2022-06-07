@@ -1,4 +1,4 @@
-import {Tags, Get, Route, Post, Body} from "tsoa";
+import {Tags, Security, Route, Post, Body} from "tsoa";
 import LoginService from "../service/login.service";
 import { User } from '@prisma/client';
 
