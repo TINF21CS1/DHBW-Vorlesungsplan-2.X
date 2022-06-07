@@ -1,21 +1,25 @@
-import { CssBaseline, Box } from '@mui/material';
-import './App.css';
-import Calendar from './Calendar';
-import Login from './Login';
-import Settings from './Settings';
-import Nav from './components/Nav';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { CssBaseline, Box } from "@mui/material";
+import "./App.css";
+import Calendar from "./Calendar";
+import Login from "./Login";
+import Settings from "./Settings";
+import Nav from "./components/Nav";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'light',
+    mode: "light",
     primary: {
-      main: '#e2001a',
-    }
+      main: "#e2001a",
+    },
   },
 });
-
 
 function App() {
   return (
@@ -26,10 +30,10 @@ function App() {
           <Nav />
         </Box>
         <Routes>
-          <Route path='/' element={<Calendar />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/settings' element={<Settings />} />
-          <Route path='*' element={<Navigate to="/" />} />
+          <Route path="/" element={<Calendar />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
     </ThemeProvider>
