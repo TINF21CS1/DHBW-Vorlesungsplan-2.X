@@ -1,54 +1,46 @@
 import { Lecture } from "@prisma/client";
-import { ObjectId } from "bson";
-import {prisma} from "../app"
+import { prisma } from "../app";
 
 export default class CalenderService {
+  public async getCourseList(): Promise<Array<{ id: string; name: string }>> {
+    const courses = await prisma.course.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+    return courses.map((course) => ({ id: course.id, name: course.name }));
+  }
 
-    public async getCalender(idCourse: string, startD: Date, endD: Date): Promise<Lecture[]|String> {
-        const result: Array<Lecture> = [];
-        await prisma.$connect();
-        try {
-        const course = await prisma.course.findFirst({
-            where: {
-              id: idCourse,
-            },
-            select: {
-              modules: true,
-            }
-          })
-          if(!course||course.modules.length==0)
-            return "No Course-Id";
-          for (var i = 0; i < course.modules.length; i++) {
-            const module = await prisma.module.findFirst({
-              where: {
-                id: course.modules[i].id,
-              },
-              select: {
-                Lecture: true,
-              }
-            })
-            if(!module||module.Lecture.length==0)
-                continue;
-             for (var j = 0; j < module.Lecture.length; j++) {
-              const lecture = await prisma.lecture.findFirst({
-                where: {
-                  id: module.Lecture[j].id,
-                  start: {
-                    gte: startD,
-                  },
-                  end: {
-                    lte: endD,
-                  }
-                },
-              })
-              if(lecture)
-                result.push(lecture);
-            }
-          }
-        } catch(err) {
-          return "Wrong-Object-ID";
-        }
-        return result;
+  public async getCalender(
+    idCourse: string,
+    startD: Date,
+    endD: Date
+  ): Promise<Lecture[] | String> {
+    try {
+      const res = await prisma.module.findMany({
+        where: {
+          courseId: idCourse,
+        },
+        select: {
+          id: true,
+          name: true,
+          lectures: true,
+        },
+      });
+      return res
+        .map((module) => {
+          const lectures = module.lectures.filter((lecture) => {
+            const start = new Date(lecture.start);
+            const end = new Date(lecture.end);
+            return startD < end && endD > start;
+          });
+          return lectures as Lecture[];
+        })
+        .flat();
+    } catch (err) {
+      return "Wrong-Object-ID";
     }
+  }
 }
-export {CalenderService}
+export { CalenderService };

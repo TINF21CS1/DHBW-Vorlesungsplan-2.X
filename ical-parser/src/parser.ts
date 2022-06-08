@@ -42,6 +42,18 @@ export async function parse_ical(course_uid: number) {
   }
   let mapping = canonicalize_module_names(module_names);
 
+  let course = await client.course.findFirst({
+    where: {
+      uid: course_uid,
+    },
+  });
+
+  if (!course) {
+    console.error("No course found for uid " + course_uid);
+    return;
+  }
+
+  // FIXME: Be more intelligent about which lectures to delete
   await client.lecture.deleteMany({
     where: {
       module: {
@@ -63,10 +75,14 @@ export async function parse_ical(course_uid: number) {
       const module_name = mapping[ev.summary];
       let module = await client.module.findFirst({
         where: {
-          name: module_name,
-          course: {
-            uid: course_uid,
-          },
+          AND: [
+            {
+              name: module_name,
+            },
+            {
+              courseId: course.id,
+            },
+          ],
         },
       });
       if (module == null) {
@@ -75,7 +91,7 @@ export async function parse_ical(course_uid: number) {
             name: module_name,
             course: {
               connect: {
-                uid: course_uid,
+                id: course.id,
               },
             },
           },
@@ -85,22 +101,8 @@ export async function parse_ical(course_uid: number) {
         console.error("Could not find or create module: " + module_name);
         continue;
       }
-      await client.lecture.upsert({
-        where: {
-          ical_uid: ev.uid,
-        },
-        update: {
-          location: ev.location,
-          start: start,
-          end: end,
-          summary: ev.summary,
-          module: {
-            connect: {
-              id: module.id,
-            },
-          },
-        },
-        create: {
+      let lecture = await client.lecture.create({
+        data: {
           ical_uid: ev.uid,
           location: ev.location,
           start: start,

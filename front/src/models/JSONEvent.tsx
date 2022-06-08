@@ -1,8 +1,8 @@
-export default interface Event {
+export default interface JSONEvent {
   id: string;
   ical_uid: string;
   summary: string;
   location: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
 }

@@ -4,7 +4,7 @@ Modern Frontend for the DHBW calendar.
 
 Original README created by `yarn create react-app . --template typescript` below
 
-----
+---
 
 # Getting Started with Create React App
 

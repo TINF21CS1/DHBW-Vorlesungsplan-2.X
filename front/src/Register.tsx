@@ -9,26 +9,30 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-const Login = () => {
+const Register = () => {
   const [alert, setAlert] = useState<string>("");
 
-  function handleLoginSubmit(event: any) {
+  function handleRegisterSubmit(event: any) {
     event.preventDefault();
+    if (event.target.password_confirmation.value !== event.target.password.value) {
+      setAlert("Passwords don't match!");
+      return;
+    }
     let payload = JSON.stringify({
       email: event.target.email.value,
       pass: event.target.password.value,
     });
-    fetch("/api/login", {
+    fetch("/api/user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: payload,
-    }).then((response) => {
+    }).then(async (response) => {
       if (response.status === 200) {
         window.location.href = "/";
       } else {
-        setAlert("Invalid credentials");
+        setAlert(await response.json());
       }
     });
   }
@@ -44,22 +48,24 @@ const Login = () => {
         }}
       >
         <Typography component="h2" variant="h3">
-          Login
+          Registrierung
         </Typography>
         {alert && (
           <Typography variant="h4" color="error">
             {alert}
           </Typography>
         )}
-        <Box component="form" onSubmit={handleLoginSubmit} sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleRegisterSubmit} sx={{ mt: 1 }}>
           <FormGroup>
             <InputLabel htmlFor="email">E-Mail Adresse</InputLabel>
             <Input type="email" id="email" />
             <InputLabel htmlFor="password">Passwort</InputLabel>
             <Input type="password" id="password" />
+            <InputLabel htmlFor="password_confirmation">Passwort bestätigen</InputLabel>
+            <Input type="password" id="password_confirmation" />
           </FormGroup>
           <Button type="submit" variant="contained" color="primary">
-            Login
+            Registrieren
           </Button>
         </Box>
       </Box>
@@ -67,4 +73,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

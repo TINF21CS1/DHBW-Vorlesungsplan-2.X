@@ -20,6 +20,10 @@
 			},
 			"User": {
 				"properties": {
+					"courseId": {
+						"type": "string",
+						"nullable": true
+					},
 					"notification": {
 						"type": "boolean"
 					},
@@ -38,6 +42,7 @@
 					}
 				},
 				"required": [
+					"courseId",
 					"notification",
 					"pass",
 					"email",
@@ -158,6 +163,43 @@
 				},
 				"tags": [
 					"Logout Handler"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/calender/course/list": {
+			"get": {
+				"operationId": "GetCourseList",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"properties": {
+											"id": {
+												"type": "string"
+											},
+											"name": {
+												"type": "string"
+											}
+										},
+										"required": [
+											"id",
+											"name"
+										],
+										"type": "object"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Calender Handler"
 				],
 				"security": [],
 				"parameters": []

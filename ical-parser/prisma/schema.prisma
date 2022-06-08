@@ -1,6 +1,8 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["interactiveTransactions"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -8,12 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  name         String?
+  email        String  @unique
+  pass         String
+  notification Boolean @default(false)
+  course       Course?  @relation(fields: [courseId], references: [id])
+  courseId     String?  @db.ObjectId
+}
+
 model Lecture {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   ical_uid String   @unique
   summary  String
   module   Module   @relation(fields: [moduleId], references: [id])
-  moduleId String   @map("moduleId")
+  moduleId String   @db.ObjectId
   location String? // FIXME: Maybe Location should be a real location type? Or should we use a string?
   start    DateTime
   end      DateTime
@@ -24,12 +36,13 @@ model Module {
   name     String
   course   Course?   @relation(fields: [courseId], references: [id])
   courseId String?   @db.ObjectId
-  Lecture  Lecture[]
+  lectures Lecture[]
 }
 
 model Course {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
-  uid     Int      @unique
-  modules Module[]
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  uid      Int      @unique
+  modules  Module[]
+  students User[]
 }
