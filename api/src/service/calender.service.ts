@@ -14,7 +14,6 @@ export default class CalenderService {
   }
 
   public async getCalender(idCourse: string, startD: Date, endD: Date): Promise<Lecture[] | String> {
-    const result: Array<Lecture> = [];
     try {
       const res = await prisma.module.findMany({
         where: {
@@ -26,7 +25,6 @@ export default class CalenderService {
           lectures: true,
         }
       });
-      console.log(res);
       return res.map(module => {
         const lectures = module.lectures.filter(lecture => {
           const start = new Date(lecture.start);
