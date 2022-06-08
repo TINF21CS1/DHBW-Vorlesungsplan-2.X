@@ -60,9 +60,11 @@ const CalendarItem = (props: { event: Event }) => {
           <DialogContentText>
             <LabeledIcon
               icon={<EventRepeat />}
-              text="Dienstag und Donnerstag"
+              text={props.event.rrule_text}
             />
-            <LabeledIcon icon={<LocationOn />} text={props.event.location} />
+            {props.event.location.trim() !== "" &&
+            (<LabeledIcon icon={<LocationOn />} text={props.event.location} />)
+          }
           </DialogContentText>
           <FormGroup>
             {

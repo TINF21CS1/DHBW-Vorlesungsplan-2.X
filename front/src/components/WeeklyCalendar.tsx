@@ -75,6 +75,8 @@ const WeeklyCalendar = () => {
                 ical_uid: event.ical_uid,
                 summary: event.summary,
                 location: event.location,
+                rrule: event.rrule,
+                rrule_text: event.rrule_text,
                 start: parseISO(event.start),
                 end: parseISO(event.end),
               };
