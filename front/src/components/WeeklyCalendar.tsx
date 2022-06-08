@@ -53,12 +53,12 @@ const WeeklyCalendar = () => {
   if (events_daily === null && selectedCourse) {
     fetch(
       "/api/calender/" +
-        selectedCourse +
-        "/" +
-        currentWeek.toISOString() +
-        "/" +
-        weekEnd.toISOString() +
-        "/"
+      selectedCourse +
+      "/" +
+      currentWeek.toISOString() +
+      "/" +
+      weekEnd.toISOString() +
+      "/"
     )
       .then((response) => {
         return response.json();
@@ -156,7 +156,7 @@ const WeeklyCalendar = () => {
       </Stack>
       {selectedCourse && (
         <Grid container spacing={1}>
-          {(events_daily || []).map((events, i) => (
+          {events_daily && (events_daily).map((events, i) => (
             <Grid item xs={12} sm={6} md={2} key={i}>
               <Stack spacing={0}>
                 <Box
@@ -175,6 +175,24 @@ const WeeklyCalendar = () => {
               </Stack>
             </Grid>
           ))}
+          {!events_daily && (
+            Array.from(Array(6).keys()).map((i) => (
+              <Grid item xs={12} sm={6} md={2} key={i}>
+                <Stack spacing={0}>
+                  <Box
+                    sx={{
+                      backgroundColor: "primary.main",
+                    }}
+                    padding={1}
+                  >
+                  </Box>                  
+                  <Typography color="white">
+                    &nbrsp;
+                  </Typography>
+                </Stack>
+              </Grid>
+            ))
+          )}
         </Grid>
       )}
       {!selectedCourse && (

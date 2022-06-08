@@ -6,7 +6,7 @@ interface User {
   email: string;
   pass: string;
   notification: boolean;
-  selectedCourses: any;
+  courseId: string;
 }
 
 test("Testing Usercreation", async () => {

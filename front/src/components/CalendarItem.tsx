@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 import {
   LocationOn,
-  Person,
   AccessTime,
   EventRepeat,
 } from "@mui/icons-material";

@@ -1,193 +1,257 @@
 {
-  "components": {
-    "examples": {},
-    "headers": {},
-    "parameters": {},
-    "requestBodies": {},
-    "responses": {},
-    "schemas": {
-      "StatusResponse": {
-        "properties": {
-          "message": {
-            "type": "string"
-          }
-        },
-        "required": ["message"],
-        "type": "object",
-        "additionalProperties": false
-      },
-      "User": {
-        "properties": {
-          "notification": {
-            "type": "boolean"
-          },
-          "pass": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "id": {
-            "type": "string"
-          }
-        },
-        "required": ["notification", "pass", "email", "name", "id"],
-        "type": "object",
-        "description": "Model User"
-      }
-    },
-    "securitySchemes": {}
-  },
-  "info": {
-    "title": ""
-  },
-  "openapi": "3.0.0",
-  "paths": {
-    "/status": {
-      "get": {
-        "operationId": "GetStatus",
-        "responses": {
-          "200": {
-            "description": "Ok",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StatusResponse"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["Health-Check"],
-        "security": [],
-        "parameters": []
-      }
-    },
-    "/user": {
-      "post": {
-        "operationId": "CreateUser",
-        "responses": {
-          "200": {
-            "description": "Ok",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["User Handler"],
-        "security": [],
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/login": {
-      "post": {
-        "operationId": "Login",
-        "responses": {
-          "200": {
-            "description": "Ok",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["Login Handler"],
-        "security": [],
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/logout": {
-      "get": {
-        "operationId": "LogOut",
-        "responses": {
-          "200": {
-            "description": "Ok",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["Logout Handler"],
-        "security": [],
-        "parameters": []
-      }
-    },
-    "/calender": {
-      "get": {
-        "operationId": "GetCalender",
-        "responses": {
-          "204": {
-            "description": "No content"
-          }
-        },
-        "tags": ["Calender2 Controller"],
-        "security": [],
-        "parameters": []
-      }
-    },
-    "/settings": {
-      "get": {
-        "operationId": "GetSettings",
-        "responses": {
-          "204": {
-            "description": "No content"
-          }
-        },
-        "tags": ["Setting Handler"],
-        "security": [],
-        "parameters": []
-      },
-      "post": {
-        "operationId": "SetSettings",
-        "responses": {
-          "204": {
-            "description": "No content"
-          }
-        },
-        "tags": ["Setting Handler"],
-        "security": [],
-        "parameters": []
-      }
-    }
-  },
-  "servers": [
-    {
-      "url": "/"
-    }
-  ]
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"StatusResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"User": {
+				"properties": {
+					"courseId": {
+						"type": "string",
+						"nullable": true
+					},
+					"notification": {
+						"type": "boolean"
+					},
+					"pass": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string",
+						"nullable": true
+					},
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"courseId",
+					"notification",
+					"pass",
+					"email",
+					"name",
+					"id"
+				],
+				"type": "object",
+				"description": "Model User"
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": ""
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/status": {
+			"get": {
+				"operationId": "GetStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/StatusResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Health-Check"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/user": {
+			"post": {
+				"operationId": "CreateUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User Handler"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/User"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Login Handler"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/User"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/logout": {
+			"get": {
+				"operationId": "LogOut",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Logout Handler"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/calender/course/list": {
+			"get": {
+				"operationId": "GetCourseList",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"properties": {
+											"id": {
+												"type": "string"
+											},
+											"name": {
+												"type": "string"
+											}
+										},
+										"required": [
+											"id",
+											"name"
+										],
+										"type": "object"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Calender Handler"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/calender": {
+			"get": {
+				"operationId": "GetCalender",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Calender2 Controller"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/settings": {
+			"get": {
+				"operationId": "GetSettings",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Setting Handler"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "SetSettings",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Setting Handler"
+				],
+				"security": [],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
 }
