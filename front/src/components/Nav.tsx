@@ -54,14 +54,19 @@ const Nav = () => {
                 Login
               </Button>
             )}
-            {loggedIn && (
-              <Button color="inherit" component={Link} to="/logout">
-                Logout
+            {!loggedIn && (
+              <Button color="inherit" component={Link} to="/register">
+                Register
               </Button>
             )}
             {loggedIn && (
               <Button color="inherit" component={Link} to="/settings">
                 Settings
+              </Button>
+            )}
+            {loggedIn && (
+              <Button color="inherit" component={Link} to="/logout">
+                Logout
               </Button>
             )}
           </Box>
@@ -95,12 +100,26 @@ const Nav = () => {
             <MenuItem component={Link} to="/">
               <Typography textAlign="center">Home</Typography>
             </MenuItem>
-            <MenuItem component={Link} to="/login">
-              <Typography textAlign="center">Login</Typography>
-            </MenuItem>
+            {!loggedIn && (
+              <MenuItem component={Link} to="/login">
+                <Typography textAlign="center">Login</Typography>
+              </MenuItem>
+            )}            
+            {!loggedIn && (
+              <MenuItem component={Link} to="/register">
+                <Typography textAlign="center">Register</Typography>
+              </MenuItem>
+            )}
+            {loggedIn && (
             <MenuItem component={Link} to="/settings">
               <Typography textAlign="center">Settings</Typography>
             </MenuItem>
+            )}
+            {loggedIn && (
+            <MenuItem component={Link} to="/logout">
+              <Typography textAlign="center">Logout</Typography>
+            </MenuItem>
+            )}
           </Menu>
         </Toolbar>
       </Container>
