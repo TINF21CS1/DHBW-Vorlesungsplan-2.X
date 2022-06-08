@@ -2,17 +2,18 @@ import { CssBaseline, Box } from "@mui/material";
 import "./App.css";
 import Calendar from "./Calendar";
 import Login from "./Login";
+import Logout from "./Logout";
 import Settings from "./Settings";
 import Nav from "./components/Nav";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   Routes,
   Navigate,
 } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-const darkTheme = createTheme({
+const theme = createTheme({
   palette: {
     mode: "light",
     primary: {
@@ -23,7 +24,7 @@ const darkTheme = createTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={theme}>
       <Router>
         <CssBaseline />
         <Box mb={1}>
@@ -32,6 +33,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Calendar />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

@@ -53,6 +53,7 @@ export async function parse_ical(course_uid: number) {
     return;
   }
 
+  // FIXME: Be more intelligent about which lectures to delete
   await client.lecture.deleteMany({
     where: {
       module: {
@@ -80,7 +81,7 @@ export async function parse_ical(course_uid: number) {
             },
             {
               courseId: course.id,
-            }
+            },
           ],
         },
       });
@@ -112,7 +113,7 @@ export async function parse_ical(course_uid: number) {
               id: module.id,
             },
           },
-        }
+        },
       });
     }
   }

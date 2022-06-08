@@ -25,6 +25,14 @@ const Nav = () => {
     setAnchorElNav(null);
   };
 
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  fetch("/api/settings").then((res) => {
+    if (res.status === 200 && !loggedIn) {
+      setLoggedIn(true);
+    } else if (res.status === 401 && loggedIn) {
+      setLoggedIn(false);
+    }
+  });
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -41,12 +49,21 @@ const Nav = () => {
             <Button color="inherit" component={Link} to="/">
               Home
             </Button>
-            <Button color="inherit" component={Link} to="/login">
-              Login
-            </Button>
-            <Button color="inherit" component={Link} to="/settings">
-              Settings
-            </Button>
+            {!loggedIn && (
+              <Button color="inherit" component={Link} to="/login">
+                Login
+              </Button>
+            )}
+            {loggedIn && (
+              <Button color="inherit" component={Link} to="/logout">
+                Logout
+              </Button>
+            )}
+            {loggedIn && (
+              <Button color="inherit" component={Link} to="/settings">
+                Settings
+              </Button>
+            )}
           </Box>
           <IconButton
             edge="start"

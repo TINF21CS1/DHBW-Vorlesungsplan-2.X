@@ -20,22 +20,37 @@ const WeeklyCalendar = () => {
     startOfWeek(new Date(), { weekStartsOn: 1 })
   );
   const [selectedCourse, setSelectedCourse] = useState<string>("");
+
   const [kurse, setKurse] = useState<Array<{ id: string; name: string }>>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [events_daily, setEventsDaily] = useState<Array<Array<Event>>>([]);
+  const [events_daily, setEventsDaily] = useState<Array<Array<Event>> | null>(
+    null
+  );
 
   const weekEnd = add(currentWeek, { days: 7 });
 
-  if (selectedCourse === "" && kurse.length === 0) {
-    fetch("/api/calender/course/list")
-      .then((res) => res.json())
-      .then((data) => {
-        setKurse(data);
-      });
+  if (selectedCourse === "") {
+    fetch("/api/settings").then(async (res) => {
+      let ok = false;
+      if (res.status === 200) {
+        const settings = await res.json();
+        if (settings.course) {
+          setSelectedCourse(settings.course.id);
+          ok = true;
+        }
+      }
+
+      if (!ok && kurse.length === 0) {
+        fetch("/api/calender/course/list")
+          .then((res) => res.json())
+          .then((data) => {
+            setKurse(data);
+          });
+      }
+    });
   }
 
   // fetch the events for the current week
-  if (isLoading && selectedCourse) {
+  if (events_daily === null && selectedCourse) {
     fetch(
       "/api/calender/" +
         selectedCourse +
@@ -70,7 +85,6 @@ const WeeklyCalendar = () => {
           return events_this_day;
         });
 
-        setIsLoading(false);
         setEventsDaily(events_per_day);
       });
   }
@@ -89,7 +103,7 @@ const WeeklyCalendar = () => {
         setCurrentWeek(
           startOfWeek(add(currentWeek, { days: -7 }), { weekStartsOn: 1 })
         );
-      setIsLoading(true);
+      setEventsDaily(null);
     }
   }
   type TouchEventHandler = (event: React.TouchEvent<HTMLDivElement>) => void;
@@ -117,7 +131,7 @@ const WeeklyCalendar = () => {
               setCurrentWeek(
                 startOfWeek(add(currentWeek, { days: -7 }), { weekStartsOn: 1 })
               );
-              setIsLoading(true);
+              setEventsDaily(null);
             }}
             color="secondary"
             aria-label="letzte Woche"
@@ -131,7 +145,7 @@ const WeeklyCalendar = () => {
               setCurrentWeek(
                 startOfWeek(add(currentWeek, { days: 7 }), { weekStartsOn: 1 })
               );
-              setIsLoading(true);
+              setEventsDaily(null);
             }}
             color="secondary"
             aria-label="nächste Woche"
@@ -140,9 +154,9 @@ const WeeklyCalendar = () => {
           </IconButton>
         </div>
       </Stack>
-      {!isLoading && selectedCourse && (
+      {selectedCourse && (
         <Grid container spacing={1}>
-          {events_daily.map((events, i) => (
+          {(events_daily || []).map((events, i) => (
             <Grid item xs={12} sm={6} md={2} key={i}>
               <Stack spacing={0}>
                 <Box
@@ -163,27 +177,43 @@ const WeeklyCalendar = () => {
           ))}
         </Grid>
       )}
-      {isLoading && selectedCourse && (
-        <Typography align="center">Loading...</Typography>
-      )}
       {!selectedCourse && (
-        <Autocomplete
-          disablePortal
-          id="kurs-combobox"
-          options={kurse.map((k) => k.name)}
-          sx={{ width: 300 }}
-          renderInput={(params) => (
-            <TextField {...params} label="Kurs auswählen" />
-          )}
-          onChange={(event, value) => {
-            if (value) {
-              let course = kurse.find((k) => k.name === value);
-              if (course) {
-                setSelectedCourse(course.id);
-              }
-            }
-          }}
-        />
+        <Stack justifyContent="center" direction="row">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <Autocomplete
+              disablePortal
+              id="kurs-combobox"
+              options={kurse.map((k) => k.name)}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Kurs auswählen" />
+              )}
+              onChange={(event, value) => {
+                if (value) {
+                  let course = kurse.find((k) => k.name === value);
+                  if (course) {
+                    fetch("/api/settings", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        course: course.id,
+                      }),
+                    });
+                    setSelectedCourse(course.id);
+                  }
+                }
+              }}
+            />
+          </div>
+        </Stack>
       )}
     </Box>
   );

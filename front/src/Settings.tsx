@@ -5,11 +5,7 @@ import {
   TextField,
   Typography,
   Autocomplete,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
+  Button,
   InputLabel,
   Input,
   FormHelperText,
@@ -17,17 +13,50 @@ import {
   FormGroup,
   FormControlLabel,
 } from "@mui/material";
+import { useState } from "react";
 
 const Settings = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log(data);
+    console.log(event.target);
+    fetch("/api/settings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: event.target.email.value,
+        notification: event.target.notification.checked,
+        course: kurse.find((c) => c.name === event.target.course.value)?.id,
+      }),
+    })
+      .then((response) => {
+        setSettings(null);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-  const kurse = ["TINF21CS1", "TINF20CS2", "TWIB18B"];
+  const [settings, setSettings] = React.useState<any>(null);
+  const [kurse, setKurse] = useState<Array<{ id: string; name: string }>>([]);
+  if (kurse.length === 0) {
+    fetch("/api/calender/course/list")
+      .then((res) => res.json())
+      .then((data) => {
+        setKurse(data);
+      });
+  }
 
+  if (!settings) {
+    fetch("/api/settings").then(async (res) => {
+      if (res.status === 200 && !settings) {
+        setSettings(await res.json());
+      }
+    });
+    return <Container></Container>;
+  }
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="md">
       <Box
         sx={{
           marginTop: 1,
@@ -42,8 +71,9 @@ const Settings = () => {
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <Autocomplete
             disablePortal
-            id="kurs-combobox"
-            options={kurse}
+            id="course"
+            options={kurse.map((c) => c.name)}
+            defaultValue={settings.course ? settings.course.name : null}
             sx={{ width: 300 }}
             renderInput={(params) => (
               <TextField {...params} label="Mein Kurs" />
@@ -54,47 +84,27 @@ const Settings = () => {
           </Typography>
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox defaultChecked />}
+              control={
+                <Checkbox
+                  id="notification"
+                  defaultChecked={settings.notification}
+                />
+              }
               label="E-mail Benachrichtigungen"
             />
             <InputLabel htmlFor="email">E-Mail Adresse</InputLabel>
-            <Input id="email" aria-describedby="email-helper" />
+            <Input
+              defaultValue={settings.email}
+              id="email"
+              aria-describedby="email-helper"
+            />
             <FormHelperText id="email-helper">
               Diese E-mail wird nur für Benachrichtigungen verwendet.
             </FormHelperText>
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label="Browser Benachrichtigungen"
-            />
           </FormGroup>
-          <Typography component="h4" variant="h5">
-            Meine Kurse
-          </Typography>
-          <List
-            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-          >
-            {["Programmieren", "Web Engineering", "Analysis", "Tutorium"].map(
-              (value) => {
-                const labelId = `checkbox-list-label-${value}`;
-
-                return (
-                  <ListItem key={value} disablePadding>
-                    <ListItemButton role={undefined} dense>
-                      <ListItemIcon>
-                        <Checkbox
-                          edge="start"
-                          tabIndex={-1}
-                          disableRipple
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText id={labelId} primary={`${value}`} />
-                    </ListItemButton>
-                  </ListItem>
-                );
-              }
-            )}
-          </List>
+          <Button type="submit" variant="contained" color="primary">
+            Speichern
+          </Button>
         </Box>
       </Box>
     </Container>
