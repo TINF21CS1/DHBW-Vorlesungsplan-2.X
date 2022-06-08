@@ -2,12 +2,40 @@ version: '2'
 
 services:
   front:
-    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan2-front:latest
+    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan-2.x-front:develop
     ports:
       - "80:80"
-  
+    networks:
+      - db
+    depends_on:
+      - api
+
   api:
-    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan2-api:latest
+    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan-2.x-api:develop
+    networks:
+      - db
+    depends_on:
+      mongosetup:
+        condition: service_completed_successfully
+    environment:
+      - PRISMA_BINARIES_MIRROR=http://prisma-builds.s3-eu-west-1.amazonaws.com
+      - NODE_ENV=production
+      - PORT=8531
+      - JWT_ACCESS_SECRET=355021477fcd2089fc8c87eedfd488db
+      - JWT_REFRESH_SECRET=9daec486e27bbfeadd72069282b29f52
+      - TOKEN_KEY=03d6fa1eba7f340eef4d351f43675ba4
+      - DATABASE_URL=mongodb://vp2:vp2@mongo:27017/calendar
+  ical:
+    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan2-ical:develop
+    networks:
+      - db
+    depends_on:
+      mongosetup:
+        condition: service_completed_successfully
+    environment:
+      - PRISMA_BINARIES_MIRROR=http://prisma-builds.s3-eu-west-1.amazonaws.com
+      - NODE_ENV=development
+      - DATABASE_URL=mongodb://vp2:vp2@mongo:27017/calendar
 
   mongo:
     image: mongo:4
@@ -24,7 +52,12 @@ services:
     depends_on:
       - mongo
     restart: "no"
-    entrypoint: [ "bash", "-c", "sleep 10 && mongo --host mongo:27017 --eval \"rs.initiate({_id: 'rs0', members: [{_id: 0, host: 'localhost:27017'}]});\""]  
+    entrypoint:
+      [
+        "bash",
+        "-c",
+        "sleep 10 && mongo --host mongo:27017 --eval \"rs.initiate({_id: 'rs0', members: [{_id: 0, host: 'mongo:27017'}]});\" && sleep 10 && mongo --host mongo:27017 --eval \"db.getSiblingDB('calendar').createUser({user: 'vp2', pwd: 'vp2', roles: ['readWrite']})\" && mongo --host mongo:27017 --eval \"db.getSiblingDB('users').createUser({user: 'vp2', pwd: 'vp2', roles: ['readWrite']})\"|| true"
+      ]
     networks:
       - db
 networks:
