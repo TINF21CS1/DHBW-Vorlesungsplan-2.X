@@ -7,6 +7,8 @@ import CalenderController from "../controller/calender.controller";
 import LogoutController from "../controller/logout.controller";
 import { prisma } from "@prisma/client";
 import NotificationController from "../controller/notification.controller";
+import IcalController from "../controller/ical.controller";
+import ical, { ICalCalendar } from "ical-generator";
 const router = express.Router();
 
 router.get("/status", async (_req, res) => {
@@ -144,6 +146,21 @@ router.post("/login", async (req, res) => {
       .json({ message: "Logged in!" });
   } catch {
     return res.status(400).json("Malformed Input");
+  }
+});
+
+router.get("/ical/:course_id/:startDate?/:endDate?", async (req, res) => {
+  try {
+    const controller = new IcalController();
+    const response = await controller.getIcal(
+      req.params.course_id,
+      req.params.startDate === undefined ? undefined : new Date(req.params.startDate),
+      req.params.endDate === undefined ? undefined : new Date(req.params.endDate)
+    );
+    typeof response !== 'string' ? (<ICalCalendar>response).serve(res) : res.json(response);
+    return res.status(200);
+  } catch (error) {
+    return res.status(400).json("Malformed Input: " + error);
   }
 });
 
