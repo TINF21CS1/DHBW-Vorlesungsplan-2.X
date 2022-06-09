@@ -14,7 +14,9 @@ const Register = () => {
 
   function handleRegisterSubmit(event: any) {
     event.preventDefault();
-    if (event.target.password_confirmation.value !== event.target.password.value) {
+    if (
+      event.target.password_confirmation.value !== event.target.password.value
+    ) {
       setAlert("Passwords don't match!");
       return;
     }
@@ -61,7 +63,9 @@ const Register = () => {
             <Input type="email" id="email" />
             <InputLabel htmlFor="password">Passwort</InputLabel>
             <Input type="password" id="password" />
-            <InputLabel htmlFor="password_confirmation">Passwort bestätigen</InputLabel>
+            <InputLabel htmlFor="password_confirmation">
+              Passwort bestätigen
+            </InputLabel>
             <Input type="password" id="password_confirmation" />
           </FormGroup>
           <Button type="submit" variant="contained" color="primary">
