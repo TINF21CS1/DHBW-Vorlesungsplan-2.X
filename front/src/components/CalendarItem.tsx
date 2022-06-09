@@ -14,11 +14,7 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import {
-  LocationOn,
-  AccessTime,
-  EventRepeat,
-} from "@mui/icons-material";
+import { LocationOn, AccessTime, EventRepeat } from "@mui/icons-material";
 import { format } from "date-fns";
 import Event from "../models/Event";
 import LabeledIcon from "./LabeledIcon";

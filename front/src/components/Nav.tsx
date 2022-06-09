@@ -104,21 +104,21 @@ const Nav = () => {
               <MenuItem component={Link} to="/login">
                 <Typography textAlign="center">Login</Typography>
               </MenuItem>
-            )}            
+            )}
             {!loggedIn && (
               <MenuItem component={Link} to="/register">
                 <Typography textAlign="center">Register</Typography>
               </MenuItem>
             )}
             {loggedIn && (
-            <MenuItem component={Link} to="/settings">
-              <Typography textAlign="center">Settings</Typography>
-            </MenuItem>
+              <MenuItem component={Link} to="/settings">
+                <Typography textAlign="center">Settings</Typography>
+              </MenuItem>
             )}
             {loggedIn && (
-            <MenuItem component={Link} to="/logout">
-              <Typography textAlign="center">Logout</Typography>
-            </MenuItem>
+              <MenuItem component={Link} to="/logout">
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             )}
           </Menu>
         </Toolbar>
