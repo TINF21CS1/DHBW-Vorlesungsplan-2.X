@@ -14,11 +14,7 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import {
-  LocationOn,
-  AccessTime,
-  EventRepeat,
-} from "@mui/icons-material";
+import { LocationOn, AccessTime, EventRepeat } from "@mui/icons-material";
 import { format } from "date-fns";
 import Event from "../models/Event";
 import LabeledIcon from "./LabeledIcon";
@@ -60,9 +56,11 @@ const CalendarItem = (props: { event: Event }) => {
           <DialogContentText>
             <LabeledIcon
               icon={<EventRepeat />}
-              text="Dienstag und Donnerstag"
+              text={props.event.rrule_text}
             />
-            <LabeledIcon icon={<LocationOn />} text={props.event.location} />
+            {props.event.location.trim() !== "" &&
+            (<LabeledIcon icon={<LocationOn />} text={props.event.location} />)
+          }
           </DialogContentText>
           <FormGroup>
             {

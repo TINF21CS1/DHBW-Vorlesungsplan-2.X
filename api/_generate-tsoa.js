@@ -2,7 +2,7 @@ const { generateRoutes, generateSpec } = require("tsoa");
 
 (async () => {
   const specOptions = {
-    basePath: "/",
+    basePath: "/api",
     entryFile: "src/app.ts",
     noImplicitAdditionalProperties: "throw-on-extras",
     controllerPathGlobs: ["src/**/*.controller.ts"],

@@ -14,7 +14,10 @@ app.use(express.json());
 app.use(morgan("tiny"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
-app.use(helmet());
+app.use(helmet({
+  hsts: false,
+  contentSecurityPolicy: false,
+}));
 
 app.use(
   "/api/docs",

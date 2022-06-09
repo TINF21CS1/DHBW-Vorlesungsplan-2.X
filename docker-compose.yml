@@ -2,7 +2,7 @@ version: '2'
 
 services:
   front:
-    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan-2.x-front:develop
+    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan-2.x-front:latest
     ports:
       - "80:80"
     networks:
@@ -11,7 +11,7 @@ services:
       - api
 
   api:
-    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan-2.x-api:develop
+    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan-2.x-api:latest
     networks:
       - db
     depends_on:
@@ -26,7 +26,7 @@ services:
       - TOKEN_KEY=03d6fa1eba7f340eef4d351f43675ba4
       - DATABASE_URL=mongodb://vp2:vp2@mongo:27017/calendar
   ical:
-    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan2-ical:develop
+    image: ghcr.io/tinf21cs1/dhbw-vorlesungsplan-2.x-icalparser:latest
     networks:
       - db
     depends_on:
@@ -40,9 +40,6 @@ services:
   mongo:
     image: mongo:4
     command: --replSet rs0
-    ports:
-      - '27017:27017'
-      - '28017:28017'
     volumes:
       - ./db/data:/data/db
     networks:
