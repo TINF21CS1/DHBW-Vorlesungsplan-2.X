@@ -32,11 +32,12 @@ function App() {
           <Nav />
         </Box>
         <Routes>
-          <Route path="/" element={<Calendar />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/register" element={<Register />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/" element={<Calendar />} />
+          <Route path="/:course" element={<Calendar />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
