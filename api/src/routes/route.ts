@@ -154,10 +154,16 @@ router.get("/ical/:course_id/:startDate?/:endDate?", async (req, res) => {
     const controller = new IcalController();
     const response = await controller.getIcal(
       req.params.course_id,
-      req.params.startDate === undefined ? undefined : new Date(req.params.startDate),
-      req.params.endDate === undefined ? undefined : new Date(req.params.endDate)
+      req.params.startDate === undefined
+        ? undefined
+        : new Date(req.params.startDate),
+      req.params.endDate === undefined
+        ? undefined
+        : new Date(req.params.endDate)
     );
-    typeof response !== 'string' ? (<ICalCalendar>response).serve(res) : res.json(response);
+    typeof response !== "string"
+      ? (<ICalCalendar>response).serve(res)
+      : res.json(response);
     return res.status(200);
   } catch (error) {
     return res.status(400).json("Malformed Input: " + error);
