@@ -152,64 +152,73 @@ const WeeklyCalendar = () => {
         <Stack justifyContent="center" direction="row">
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              flexWrap: "wrap",
-              marginRight: "auto",
-              marginLeft: "auto",
+              display: "grid",
+              gridTemplateColumns: "1fr auto 1fr",
+              gridColumnGap: "5px",
+              justifyItems: "center",
+              width: "100%",
             }}
           >
-            <IconButton
-              size="large"
-              onClick={() => {
-                setCurrentWeek(
-                  startOfWeek(add(currentWeek, { days: -7 }), {
-                    weekStartsOn: 1,
-                  })
-                );
-                setEventsDaily(null);
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                flexWrap: "wrap",
+                gridColumnStart: 2,
               }}
-              color="secondary"
-              aria-label="letzte Woche"
+            >
+              <IconButton
+                size="large"
+                onClick={() => {
+                  setCurrentWeek(
+                    startOfWeek(add(currentWeek, { days: -7 }), {
+                      weekStartsOn: 1,
+                    })
+                  );
+                  setEventsDaily(null);
+                }}
+                color="secondary"
+                aria-label="letzte Woche"
+                sx={{
+                  marginLeft: "auto",
+                }}
+              >
+                <ChevronLeft />
+              </IconButton>
+              <Typography align="center">
+                KW {format(currentWeek, "ww")}
+              </Typography>
+              <IconButton
+                size="large"
+                onClick={() => {
+                  setCurrentWeek(
+                    startOfWeek(add(currentWeek, { days: 7 }), {
+                      weekStartsOn: 1,
+                    })
+                  );
+                  setEventsDaily(null);
+                }}
+                color="secondary"
+                aria-label="nächste Woche"
+                sx={{
+                  flexGrow: 1,
+                }}
+              >
+                <ChevronRight />
+              </IconButton>
+            </div>
+
+            <Button
+              aria-describedby={id}
+              variant="outlined"
+              onClick={handleClick}
               sx={{
                 marginLeft: "auto",
               }}
             >
-              <ChevronLeft />
-            </IconButton>
-            <Typography align="center">
-              KW {format(currentWeek, "ww")}
-            </Typography>
-            <IconButton
-              size="large"
-              onClick={() => {
-                setCurrentWeek(
-                  startOfWeek(add(currentWeek, { days: 7 }), {
-                    weekStartsOn: 1,
-                  })
-                );
-                setEventsDaily(null);
-              }}
-              color="secondary"
-              aria-label="nächste Woche"
-              sx={{
-                flexGrow: 1,
-              }}
-            >
-              <ChevronRight />
-            </IconButton>
+              <LabeledIcon icon={<Link />} text="iCal" />
+            </Button>
           </div>
-
-          <Button
-            aria-describedby={id}
-            variant="outlined"
-            onClick={handleClick}
-            sx={{
-              marginRight: 0,
-            }}
-          >
-            <LabeledIcon icon={<Link />} text="iCal" />
-          </Button>
           <Popover
             id={id}
             open={open}
