@@ -1,4 +1,5 @@
 import { useState } from "react";
+import React from "react";
 import {
   Grid,
   Stack,
@@ -7,12 +8,15 @@ import {
   IconButton,
   TextField,
   Autocomplete,
+  Popover,
+  Button,
 } from "@mui/material";
-import { ChevronRight, ChevronLeft } from "@mui/icons-material";
+import { ChevronRight, ChevronLeft, Link } from "@mui/icons-material";
 import { startOfWeek, isSameDay, add, format, parseISO } from "date-fns";
 import CalendarItem from "./CalendarItem";
 import Event from "../models/Event";
 import JSONEvent from "../models/JSONEvent";
+import LabeledIcon from "./LabeledIcon";
 
 const WeeklyCalendar = () => {
   // create a state for the current week
@@ -53,12 +57,12 @@ const WeeklyCalendar = () => {
   if (events_daily === null && selectedCourse) {
     fetch(
       "/api/calender/" +
-      selectedCourse +
-      "/" +
-      currentWeek.toISOString() +
-      "/" +
-      weekEnd.toISOString() +
-      "/"
+        selectedCourse +
+        "/" +
+        currentWeek.toISOString() +
+        "/" +
+        weekEnd.toISOString() +
+        "/"
     )
       .then((response) => {
         return response.json();
@@ -115,68 +119,119 @@ const WeeklyCalendar = () => {
     handleGesture();
   };
 
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    try {
+      navigator.clipboard.writeText(
+        window.location.protocol +
+          "//" +
+          window.location.host +
+          "/api/ical/" +
+          selectedCourse
+      );
+    } catch (err) {
+      console.warn("Clipboard not supported");
+    }
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
   return (
     <Box onTouchStart={touchstart} onTouchEnd={touchend}>
-      <Stack justifyContent="center" direction="row">
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          <IconButton
-            size="large"
-            onClick={() => {
-              setCurrentWeek(
-                startOfWeek(add(currentWeek, { days: -7 }), { weekStartsOn: 1 })
-              );
-              setEventsDaily(null);
+      {selectedCourse && (
+        <Stack justifyContent="center" direction="row">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              marginRight: "auto",
+              marginLeft: "auto",
             }}
-            color="secondary"
-            aria-label="letzte Woche"
           >
-            <ChevronLeft />
-          </IconButton>
-          <Typography align="center">KW {format(currentWeek, "ww")}</Typography>
-          <IconButton
-            size="large"
-            onClick={() => {
-              setCurrentWeek(
-                startOfWeek(add(currentWeek, { days: 7 }), { weekStartsOn: 1 })
-              );
-              setEventsDaily(null);
+            <IconButton
+              size="large"
+              onClick={() => {
+                setCurrentWeek(
+                  startOfWeek(add(currentWeek, { days: -7 }), {
+                    weekStartsOn: 1,
+                  })
+                );
+                setEventsDaily(null);
+              }}
+              color="secondary"
+              aria-label="letzte Woche"
+              sx={{
+                marginLeft: "auto",
+              }}
+            >
+              <ChevronLeft />
+            </IconButton>
+            <Typography align="center">
+              KW {format(currentWeek, "ww")}
+            </Typography>
+            <IconButton
+              size="large"
+              onClick={() => {
+                setCurrentWeek(
+                  startOfWeek(add(currentWeek, { days: 7 }), {
+                    weekStartsOn: 1,
+                  })
+                );
+                setEventsDaily(null);
+              }}
+              color="secondary"
+              aria-label="nächste Woche"
+              sx={{
+                flexGrow: 1,
+              }}
+            >
+              <ChevronRight />
+            </IconButton>
+          </div>
+
+          <Button
+            aria-describedby={id}
+            variant="outlined"
+            onClick={handleClick}
+            sx={{
+              marginRight: 0,
             }}
-            color="secondary"
-            aria-label="nächste Woche"
           >
-            <ChevronRight />
-          </IconButton>
-        </div>
-      </Stack>
+            <LabeledIcon icon={<Link />} text="iCal" />
+          </Button>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+          >
+            <Typography
+              style={{
+                userSelect: "all",
+              }}
+            >
+              Copied!
+            </Typography>
+          </Popover>
+        </Stack>
+      )}
       {selectedCourse && (
         <Grid container spacing={1}>
-          {events_daily && (events_daily).map((events, i) => (
-            <Grid item xs={12} sm={6} md={2} key={i}>
-              <Stack spacing={0}>
-                <Box
-                  sx={{
-                    backgroundColor: "primary.main",
-                  }}
-                  padding={1}
-                >
-                  <Typography color="white">
-                    {format(add(currentWeek, { days: i }), "EEEE (dd.MM.yyyy)")}{" "}
-                  </Typography>
-                </Box>
-                {events.map((event) => (
-                  <CalendarItem key={event.start.toISOString()} event={event} />
-                ))}
-              </Stack>
-            </Grid>
-          ))}
-          {!events_daily && (
-            Array.from(Array(6).keys()).map((i) => (
+          {events_daily &&
+            events_daily.map((events, i) => (
               <Grid item xs={12} sm={6} md={2} key={i}>
                 <Stack spacing={0}>
                   <Box
@@ -185,14 +240,36 @@ const WeeklyCalendar = () => {
                     }}
                     padding={1}
                   >
-                  </Box>                  
-                  <Typography color="white">
-                    &nbrsp;
-                  </Typography>
+                    <Typography color="white">
+                      {format(
+                        add(currentWeek, { days: i }),
+                        "EEEE (dd.MM.yyyy)"
+                      )}{" "}
+                    </Typography>
+                  </Box>
+                  {events.map((event) => (
+                    <CalendarItem
+                      key={event.start.toISOString()}
+                      event={event}
+                    />
+                  ))}
                 </Stack>
               </Grid>
-            ))
-          )}
+            ))}
+          {!events_daily &&
+            Array.from(Array(6).keys()).map((i) => (
+              <Grid item xs={12} sm={6} md={2} key={i}>
+                <Stack spacing={0}>
+                  <Box
+                    sx={{
+                      backgroundColor: "primary.main",
+                    }}
+                    padding={1}
+                  ></Box>
+                  <Typography color="white">&nbrsp;</Typography>
+                </Stack>
+              </Grid>
+            ))}
         </Grid>
       )}
       {!selectedCourse && (
