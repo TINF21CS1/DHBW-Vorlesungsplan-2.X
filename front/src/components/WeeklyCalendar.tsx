@@ -17,6 +17,7 @@ import CalendarItem from "./CalendarItem";
 import Event from "../models/Event";
 import JSONEvent from "../models/JSONEvent";
 import LabeledIcon from "./LabeledIcon";
+import  { useNavigate, useParams } from 'react-router-dom'
 
 const WeeklyCalendar = () => {
   // create a state for the current week
@@ -31,6 +32,12 @@ const WeeklyCalendar = () => {
   );
 
   const weekEnd = add(currentWeek, { days: 7 });
+  const navigate = useNavigate();
+  const {course} = useParams();
+
+  if(course !== undefined && selectedCourse !== course){
+    setSelectedCourse(course);
+  }
 
   if (selectedCourse === "") {
     fetch("/api/settings").then(async (res) => {
@@ -313,7 +320,7 @@ const WeeklyCalendar = () => {
                         course: course.id,
                       }),
                     });
-                    setSelectedCourse(course.id);
+                    navigate("/"+course.id);
                   }
                 }
               }}
