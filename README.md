@@ -2,6 +2,8 @@
 
 A simple react application to browse an iCal file.
 
+![Example calendar](docs/example.png)
+
 ## Licenses
 
 - [ical.js](https://www.npmjs.com/package/ical.js) licensed under [MPL-2.0](https://www.mozilla.org/en-US/MPL/2.0/)
