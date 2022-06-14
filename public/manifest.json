@@ -1,6 +1,6 @@
 {
-  "short_name": "Vorlesungsplan",
-  "name": "DHBW Vorlesungsplan 2.X",
+  "short_name": "Calendar",
+  "name": "React iCal Calendar",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,18 +8,14 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#e2001a",
+  "theme_color": "#0097e6",
   "background_color": "#ffffff"
 }

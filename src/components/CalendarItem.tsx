@@ -8,17 +8,15 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  Switch,
-  FormGroup,
-  FormControlLabel,
   DialogActions,
   Button,
 } from "@mui/material";
-import { LocationOn, AccessTime, EventRepeat } from "@mui/icons-material";
+import { LocationOn, AccessTime } from "@mui/icons-material";
 import { format } from "date-fns";
-import Event from "../models/Event";
+import { Event } from "ical.js";
 import LabeledIcon from "./LabeledIcon";
 
+// FIXME: This doesn't do any escaping, so the iCal needs to be trusted (or XSS is imminent?)
 const CalendarItem = (props: { event: Event }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -29,7 +27,6 @@ const CalendarItem = (props: { event: Event }) => {
   const handleClose = () => {
     setOpen(false);
   };
-
   return (
     <Card>
       <CardActionArea onClick={handleClickOpen}>
@@ -37,14 +34,16 @@ const CalendarItem = (props: { event: Event }) => {
           <Typography variant="h5" component="h3">
             {props.event.summary}
           </Typography>
-          <LabeledIcon
-            icon={<AccessTime />}
-            text={
-              format(props.event.start, "HH:mm") +
-              " - " +
-              format(props.event.end, "HH:mm")
-            }
-          />
+          {props.event.startDate && props.event.endDate && (
+            <LabeledIcon
+              icon={<AccessTime />}
+              text={
+                format(props.event.startDate.toJSDate(), "HH:mm") +
+                " - " +
+                format(props.event.endDate.toJSDate(), "HH:mm")
+              }
+            />
+          )}
           {props.event.location.trim() !== "" && (
             <LabeledIcon icon={<LocationOn />} text={props.event.location} />
           )}
@@ -54,27 +53,25 @@ const CalendarItem = (props: { event: Event }) => {
         <DialogTitle>{props.event.summary}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <LabeledIcon
-              icon={<EventRepeat />}
-              text={props.event.rrule_text}
-            />
-            {props.event.location.trim() !== "" &&
-            (<LabeledIcon icon={<LocationOn />} text={props.event.location} />)
-          }
+            {props.event.startDate && props.event.endDate && (
+              <LabeledIcon
+                icon={<AccessTime />}
+                text={
+                  format(props.event.startDate.toJSDate(), "HH:mm") +
+                  " - " +
+                  format(props.event.endDate.toJSDate(), "HH:mm")
+                }
+              />
+            )}
+            {props.event.location.trim() !== "" && (
+              <LabeledIcon icon={<LocationOn />} text={props.event.location} />
+            )}
+            {props.event.description && (
+              <Typography variant="body2" component="p">
+                {props.event.description}
+              </Typography>
+            )}
           </DialogContentText>
-          <FormGroup>
-            {
-              // <FormControlLabel control={<Switch defaultChecked={!props.event.ignored} />} label="Im Vorlesungsplan anzeigen"  />
-            }
-            <FormControlLabel
-              control={<Switch />}
-              label="Browser Benachrichtigungen"
-            />
-            <FormControlLabel
-              control={<Switch disabled />}
-              label="E-Mail Benachrichtigungen"
-            />
-          </FormGroup>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>

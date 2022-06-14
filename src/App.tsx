@@ -1,10 +1,6 @@
 import { CssBaseline, Box } from "@mui/material";
 import "./App.css";
 import Calendar from "./Calendar";
-import Login from "./Login";
-import Logout from "./Logout";
-import Register from "./Register";
-import Settings from "./Settings";
 import Nav from "./components/Nav";
 import {
   HashRouter as Router,
@@ -18,7 +14,7 @@ const theme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#e2001a",
+      main: "#0097e6",
     },
   },
 });
@@ -32,12 +28,8 @@ function App() {
           <Nav />
         </Box>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/" element={<Calendar />} />
-          <Route path="/:course" element={<Calendar />} />
+          {/* FIXME: The iCAL URL is currently hardcoded. */}
+          <Route path="/" element={<Calendar url="ical.ics" />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
