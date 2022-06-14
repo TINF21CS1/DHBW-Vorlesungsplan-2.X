@@ -25,9 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
-          cache-dependency-path: ./front
       - run: rm -rf node_modules && yarn install --frozen-lockfile
-      - run: yarn test
       - run: yarn build
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
