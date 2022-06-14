@@ -14,15 +14,18 @@ const Register = () => {
 
   function handleRegisterSubmit(event: any) {
     event.preventDefault();
+    const password = (document.getElementById("password") as HTMLInputElement).value;
+    const passwordConfirm = (document.getElementById("password_confirmation") as HTMLInputElement).value;
+    const email = (document.getElementById("email") as HTMLInputElement).value;
     if (
-      event.target.password_confirmation.value !== event.target.password.value
+      passwordConfirm !== password
     ) {
-      setAlert("Passwords don't match!");
+      setAlert("Passwörter stimmen nicht überein!");
       return;
     }
     let payload = JSON.stringify({
-      email: event.target.email.value,
-      pass: event.target.password.value,
+      email: email,
+      pass: password,
     });
     fetch("/api/user", {
       method: "POST",
@@ -62,11 +65,11 @@ const Register = () => {
             <InputLabel htmlFor="email">E-Mail Adresse</InputLabel>
             <Input type="email" id="email" />
             <InputLabel htmlFor="password">Passwort</InputLabel>
-            <Input type="password" id="password" />
+            <Input type="password" id="password" data-testid="password_div" />
             <InputLabel htmlFor="password_confirmation">
               Passwort bestätigen
             </InputLabel>
-            <Input type="password" id="password_confirmation" />
+            <Input type="password" id="password_confirmation" data-testid="password_confirmation_div" />
           </FormGroup>
           <Button type="submit" variant="contained" color="primary">
             Registrieren
