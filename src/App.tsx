@@ -13,6 +13,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import CopyLinkButton from "./components/CopyLinkButton";
 
 const theme = createTheme({
   palette: {
@@ -23,17 +24,21 @@ const theme = createTheme({
   },
 });
 
+// FIXME: The iCAL URL is currently hardcoded.
+const ical_url = "ical.ics";
+
 function App() {
+  let url = new URL(ical_url, window.location.toString()).toString();
+
   return (
     <ThemeProvider theme={theme}>
       <Router>
         <CssBaseline />
         <Box mb={1}>
-          <Nav />
+          <Nav elementRight={<CopyLinkButton text="iCal" url={url}/>}/>
         </Box>
         <Routes>
-          {/* FIXME: The iCAL URL is currently hardcoded. */}
-          <Route path="/" element={<Calendar url="ical.ics" />} />
+          <Route path="/" element={<Calendar url={url} />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>

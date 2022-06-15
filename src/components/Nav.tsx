@@ -1,6 +1,6 @@
 import { Container, AppBar, Toolbar, Typography } from "@mui/material";
 
-const Nav = () => {
+const Nav = (props: {elementRight: JSX.Element}) => {
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -13,6 +13,7 @@ const Nav = () => {
           >
             Calendar
           </Typography>
+          {props.elementRight}
         </Toolbar>
       </Container>
     </AppBar>

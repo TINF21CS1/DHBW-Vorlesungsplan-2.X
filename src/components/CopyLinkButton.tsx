@@ -1,0 +1,46 @@
+import { useState } from "react";
+import { Button, Snackbar, Alert } from "@mui/material";
+import { Link } from "@mui/icons-material";
+import LabeledIcon from "./LabeledIcon";
+
+const CopyButton = (props: { text: string; url: string }) => {
+  const [copied, setCopied] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const handleClick = () => {
+    try {
+      navigator.clipboard.writeText(props.url);
+      setCopied(true);
+    } catch (err) {
+      console.error("Couldn't copy to clipboard:", err);
+    }
+    setOpen(true);
+  };
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+  // FIXME: Provide an alternative if the clipboard is unavailable
+  return (
+    <div>
+      <Button variant="contained" color="secondary" onClick={handleClick}>
+        <LabeledIcon icon={<Link />} text={props.text} />
+      </Button>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity={copied ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {copied ? "Copied URL!" : "Failed to copy URL"}
+        </Alert>
+      </Snackbar>
+    </div>
+  );
+};
+
+export default CopyButton;
