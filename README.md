@@ -1,4 +1,5 @@
 # DHBW Vorlesungsplan v2
+![Docker Publish status](https://github.com/TINF21CS1/DHBW-Vorlesungsplan-2.X/actions/workflows/docker-publish.yml/badge.svg)
 
 Dieser Vorlesungsplan sollte der Nachfolger des aktuell unter [https://vorlesungsplan.dhbw-mannheim.de/](https://vorlesungsplan.dhbw-mannheim.de/) veröffentlichten Vorlesungsplanes sein.
 
