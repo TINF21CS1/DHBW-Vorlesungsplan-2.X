@@ -1,6 +1,6 @@
 import { Container, AppBar, Toolbar, Typography } from "@mui/material";
 
-const Nav = (props: {elementRight: JSX.Element}) => {
+const Nav = (props: { elementRight: JSX.Element }) => {
   return (
     <AppBar position="static">
       <Container maxWidth="xl">

@@ -52,26 +52,22 @@ const CalendarItem = (props: { event: Event }) => {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{props.event.summary}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            {props.event.startDate && props.event.endDate && (
-              <LabeledIcon
-                icon={<AccessTime />}
-                text={
-                  format(props.event.startDate.toJSDate(), "HH:mm") +
-                  " - " +
-                  format(props.event.endDate.toJSDate(), "HH:mm")
-                }
-              />
-            )}
-            {props.event.location.trim() !== "" && (
-              <LabeledIcon icon={<LocationOn />} text={props.event.location} />
-            )}
-            {props.event.description && (
-              <Typography variant="body2" component="p">
-                {props.event.description}
-              </Typography>
-            )}
-          </DialogContentText>
+          {props.event.startDate && props.event.endDate && (
+            <LabeledIcon
+              icon={<AccessTime />}
+              text={
+                format(props.event.startDate.toJSDate(), "HH:mm") +
+                " - " +
+                format(props.event.endDate.toJSDate(), "HH:mm")
+              }
+            />
+          )}
+          {props.event.location.trim() !== "" && (
+            <LabeledIcon icon={<LocationOn />} text={props.event.location} />
+          )}
+          {props.event.description && (
+            <DialogContentText>{props.event.description}</DialogContentText>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>

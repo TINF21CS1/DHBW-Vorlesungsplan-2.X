@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button, Snackbar, Alert } from "@mui/material";
 import { Link } from "@mui/icons-material";
-import LabeledIcon from "./LabeledIcon";
 
 const CopyButton = (props: { text: string; url: string }) => {
   const [copied, setCopied] = useState<boolean>(false);
@@ -27,7 +26,12 @@ const CopyButton = (props: { text: string; url: string }) => {
   // FIXME: Provide an alternative if the clipboard is unavailable
   return (
     <div>
-      <Button variant="contained" color="secondary" onClick={handleClick} startIcon={<Link />}>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={handleClick}
+        startIcon={<Link />}
+      >
         {props.text}
       </Button>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
