@@ -1,5 +1,4 @@
 import ical, { VEvent, VTimeZone } from "node-ical";
-import { Course, prisma } from "@prisma/client";
 import date_fns_tz from "date-fns-tz";
 const { zonedTimeToUtc } = date_fns_tz;
 import client from "./db.js";
@@ -28,7 +27,6 @@ export async function parse_ical(course_uid: number) {
     }
   }
 
-  // FIXME: This loop explicitly drops any VTimezone information. Need to adjust the times in the data to be UTC.
   let module_names: Set<string> = new Set();
   for (let k in data) {
     if (data[k].type == "VEVENT") {
@@ -85,7 +83,7 @@ export async function parse_ical(course_uid: number) {
           ],
         },
       });
-      if (module == null) {
+      if (module === null) {
         module = await client.module.create({
           data: {
             name: module_name,
@@ -97,7 +95,7 @@ export async function parse_ical(course_uid: number) {
           },
         });
       }
-      if (module == null) {
+      if (module === null) {
         console.error("Could not find or create module: " + module_name);
         continue;
       }
