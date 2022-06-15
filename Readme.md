@@ -2,6 +2,8 @@
 
 Dieser Vorlesungsplan sollte der Nachfolger des aktuell unter [https://vorlesungsplan.dhbw-mannheim.de/](https://vorlesungsplan.dhbw-mannheim.de/) veröffentlichten Vorlesungsplanes sein.
 
+Eine Staging-Version des Vorlesungsplanes ist unter [https://vp2.frereit.de/](https://vp2.frereit.de/) verfügbar. Sie reflektiert den aktuellen Stand der develop branch.
+
 Es ist ein Projekt von Jan-Luca Gruber, Julian Lemmerich, Frederik Reiter und Hauke Platte im Modul Web- und App-Engineering.
 
 ## Usage
