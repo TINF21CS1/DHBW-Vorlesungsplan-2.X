@@ -27,8 +27,8 @@ const CopyButton = (props: { text: string; url: string }) => {
   // FIXME: Provide an alternative if the clipboard is unavailable
   return (
     <div>
-      <Button variant="contained" color="secondary" onClick={handleClick}>
-        <LabeledIcon icon={<Link />} text={props.text} />
+      <Button variant="contained" color="secondary" onClick={handleClick} startIcon={<Link />}>
+        {props.text}
       </Button>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert
