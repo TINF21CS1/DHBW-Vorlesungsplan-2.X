@@ -8,11 +8,7 @@ import {
   getUnixTime,
 } from "date-fns";
 import client from "./db.js";
-
-// this package is broken, so we need to import this way and loose type annotations
-// https://stackoverflow.com/a/64000785/12125728
-import pkg from "rrule";
-const { RRule } = pkg as any;
+import RRule from "rrule";
 
 export async function unify_lectures(course_uid: number) {
   const courses = await client.course.findMany({
@@ -87,13 +83,30 @@ export async function unify_lectures(course_uid: number) {
           RRule.FR,
           RRule.SA,
         ][getDay(current.start)];
-        let rrule = new RRule({
-          freq: RRule.WEEKLY,
-          interval: 1,
-          byweekday: rrule_day,
-          dtstart: lectures_per_day[day][0].start,
-          until: lectures_per_day[day][lectures_per_day[day].length - 1].end,
-        });
+        let rrule;
+        try {
+          rrule = new RRule({
+            freq: RRule.WEEKLY,
+            interval: 1,
+            byweekday: rrule_day,
+            dtstart: lectures_per_day[day][0].start,
+            until: lectures_per_day[day][lectures_per_day[day].length - 1].end,
+          });
+        } catch (err: any) {
+          if (err.name == "TypeError") {
+            let RealRRule = (RRule as any).RRule;
+            // this package is broken, so we need to construct it this way with ES2022 modules
+            // https://stackoverflow.com/a/64000785/12125728
+            rrule = new RealRRule({
+              freq: RealRRule.WEEKLY,
+              interval: 1,
+              byweekday: rrule_day,
+              dtstart: lectures_per_day[day][0].start,
+              until:
+                lectures_per_day[day][lectures_per_day[day].length - 1].end,
+            });
+          }
+        }
         await client.lecture.updateMany({
           where: {
             id: {

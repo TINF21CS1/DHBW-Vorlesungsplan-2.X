@@ -16,7 +16,7 @@
     "prisma:studio": "env-cmd -f .env.dev yarn prisma studio",
     "pretest": "yarn build",
     "_fixme_test": "For some reason jest doesn't work with env-cmd",
-    "test": "DATABASE_URL=\"mongodb://admin:admin@127.0.0.1:27018/admin\" jest"
+    "test": "DATABASE_URL=\"mongodb://stub:stub@stub:27018/stub\" jest"
   },
   "dependencies": {
     "@prisma/client": "3.14.0",
@@ -34,6 +34,7 @@
     "@types/jsdom": "^16.2.14",
     "env-cmd": "^10.1.0",
     "jest": "^28.1.0",
+    "jest-mock-extended": "^2.0.6",
     "prettier": "^2.6.2",
     "ts-jest": "^28.0.3",
     "tsc": "^2.0.4",
