@@ -1,4 +1,5 @@
-import { CssBaseline, Box } from "@mui/material";
+import { useMemo } from 'react';
+import { CssBaseline, Box, useMediaQuery } from "@mui/material";
 import "./App.css";
 import Calendar from "./Calendar";
 import Nav from "./components/Nav";
@@ -15,19 +16,22 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import CopyLinkButton from "./components/CopyLinkButton";
 
-const theme = createTheme({
-  palette: {
-    mode: "light",
-    primary: {
-      main: "#0097e6",
-    },
-  },
-});
-
 // FIXME: The iCAL URL is currently hardcoded.
 const ical_url = "ical.ics";
 
 function App() {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? 'dark' : 'light',
+        },
+      }),
+    [prefersDarkMode],  
+  );
+
   let url = new URL(ical_url, window.location.toString()).toString();
 
   return (
