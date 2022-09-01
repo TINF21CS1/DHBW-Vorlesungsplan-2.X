@@ -16,7 +16,6 @@ import { format } from "date-fns";
 import { Event } from "ical.js";
 import LabeledIcon from "./LabeledIcon";
 
-// FIXME: This doesn't do any escaping, so the iCal needs to be trusted (or XSS is imminent?)
 const CalendarItem = (props: { event: Event }) => {
   const [open, setOpen] = React.useState(false);
 
