@@ -16,9 +16,6 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import CopyLinkButton from "./components/CopyLinkButton";
 
-// FIXME: The iCAL URL is currently hardcoded.
-const ical_url = "ical.ics";
-
 function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
@@ -31,9 +28,7 @@ function App() {
       }),
     [prefersDarkMode]
   );
-
-  let url = new URL(ical_url, window.location.toString()).toString();
-
+  const url = (window as any).Config.url;
   return (
     <ThemeProvider theme={theme}>
       <Router>

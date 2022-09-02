@@ -5,9 +5,10 @@ import { Link } from "@mui/icons-material";
 const CopyButton = (props: { text: string; url: string }) => {
   const [copied, setCopied] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+  let full_url = new URL(props.url, window.location.origin).href;
   const handleClick = () => {
     try {
-      navigator.clipboard.writeText(props.url);
+      navigator.clipboard.writeText(full_url);
       setCopied(true);
     } catch (err) {
       console.error("Couldn't copy to clipboard:", err);
