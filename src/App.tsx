@@ -15,6 +15,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import CopyLinkButton from "./components/CopyLinkButton";
+import Footer from "./components/Footer";
 
 function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -40,6 +41,7 @@ function App() {
           <Route path="/" element={<Calendar url={url} />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
+        <Footer/>
       </Router>
     </ThemeProvider>
   );
