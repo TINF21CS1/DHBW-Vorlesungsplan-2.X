@@ -32,17 +32,21 @@ function App() {
   const url = (window as any).Config.url;
   return (
     <ThemeProvider theme={theme}>
-      <Router>
-        <CssBaseline />
-        <Box mb={1}>
+      <CssBaseline />
+      <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+        <Box sx={{ flexGrow: 1 }}>
           <Nav elementRight={<CopyLinkButton text="iCal" url={url} />} />
+          <Router>
+            <Routes>
+              <Route path="/" element={<Calendar url={url} />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </Router>
         </Box>
-        <Routes>
-          <Route path="/" element={<Calendar url={url} />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-        <Footer/>
-      </Router>
+        <Box sx={{ paddingTop: "1em" }}>
+          <Footer />
+        </Box>
+      </Box>
     </ThemeProvider>
   );
 }
