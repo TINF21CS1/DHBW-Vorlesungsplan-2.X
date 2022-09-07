@@ -1,11 +1,23 @@
 {
   "short_name": "Calendar",
   "name": "React iCal Calendar",
+  "description": "Simple weekly calendar viewer",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "75x75",
       "type": "image/x-icon"
+    },    
+    {
+      "src": "logo192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "logo.svg",
@@ -15,7 +27,8 @@
     }
   ],
   "start_url": ".",
+  "id": "/",
   "display": "standalone",
-  "theme_color": "#0097e6",
+  "theme_color": "#1976d2",
   "background_color": "#ffffff"
 }
