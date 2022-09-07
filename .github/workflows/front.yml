@@ -27,7 +27,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: yarn
       - run: rm -rf node_modules && yarn install --frozen-lockfile
-      - run: yarn build
+      - run: GENERATE_SOURCEMAP=false yarn build
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
