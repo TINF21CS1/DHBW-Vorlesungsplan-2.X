@@ -30,7 +30,11 @@ const CalendarItem = (props: { event: Event }) => {
     <Card>
       <CardActionArea onClick={handleClickOpen}>
         <Box padding={1}>
-          <Typography variant="h5" component="h3">
+          <Typography
+            style={{ wordWrap: "break-word" }}
+            variant="h5"
+            component="h3"
+          >
             {props.event.summary}
           </Typography>
           {props.event.startDate && props.event.endDate && (
