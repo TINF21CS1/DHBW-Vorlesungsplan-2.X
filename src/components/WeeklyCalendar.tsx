@@ -20,7 +20,7 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
     );
     return events_this_day;
   });
-
+  
   return (
     <Box>
       <Stack justifyContent="center" direction="row">
@@ -49,7 +49,7 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
             <ChevronLeft />
           </IconButton>
           <Typography align="center">
-            week {format(currentWeek, "ww")}
+            week {format(currentWeek, "I")}
           </Typography>
           <IconButton
             size="large"
