@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Grid, Stack, Box, Typography, IconButton } from "@mui/material";
+import {
+  Grid,
+  Stack,
+  Box,
+  Typography,
+  IconButton,
+  useMediaQuery,
+} from "@mui/material";
 import { ChevronRight, ChevronLeft } from "@mui/icons-material";
 import { startOfWeek, isSameDay, add, format } from "date-fns";
 import { Event } from "ical.js";
@@ -20,7 +27,7 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
     );
     return events_this_day;
   });
-
+  const wants_dark = useMediaQuery("(prefers-color-scheme: dark)");
   return (
     <Box>
       <Stack justifyContent="center" direction="row">
@@ -76,11 +83,13 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
             <Stack spacing={0}>
               <Box
                 sx={{
-                  backgroundColor: "primary.main",
+                  backgroundColor: wants_dark
+                    ? "primary.dark"
+                    : "primary.light",
                 }}
                 padding={1}
               >
-                <Typography color="white">
+                <Typography color="primary.text">
                   {format(add(currentWeek, { days: i }), "EEEE (dd.MM.yyyy)")}{" "}
                 </Typography>
               </Box>
