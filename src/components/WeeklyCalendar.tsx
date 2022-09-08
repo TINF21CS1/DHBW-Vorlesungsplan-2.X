@@ -20,7 +20,7 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
     );
     return events_this_day;
   });
-  
+
   return (
     <Box>
       <Stack justifyContent="center" direction="row">
