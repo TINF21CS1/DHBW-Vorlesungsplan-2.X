@@ -89,7 +89,14 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
                 }}
                 padding={1}
               >
-                <Typography color="primary.text">
+                <Typography
+                  color="primary.text"
+                  fontWeight={
+                    isSameDay(add(currentWeek, { days: i }), new Date())
+                      ? "bold"
+                      : {}
+                  }
+                >
                   {format(add(currentWeek, { days: i }), "EEEE (dd.MM.yyyy)")}{" "}
                 </Typography>
               </Box>
