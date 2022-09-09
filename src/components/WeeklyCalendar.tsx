@@ -7,16 +7,22 @@ import {
   IconButton,
   useMediaQuery,
 } from "@mui/material";
-import { ChevronRight, ChevronLeft } from "@mui/icons-material";
+import {
+  ChevronRight,
+  ChevronLeft,
+  KeyboardDoubleArrowLeft,
+  KeyboardDoubleArrowRight,
+} from "@mui/icons-material";
 import { startOfWeek, isSameDay, add, format } from "date-fns";
 import { Event } from "ical.js";
 import CalendarItem from "./CalendarItem";
 
 const WeeklyCalendar = (props: { events: Event[] }) => {
-  const [currentWeek, setCurrentWeek] = useState(
-    startOfWeek(new Date(), { weekStartsOn: 1 })
-  );
-
+  const today = startOfWeek(new Date(), { weekStartsOn: 1 });
+  const [currentWeek, setCurrentWeek] = useState(today);
+  const go_today = () => {
+    setCurrentWeek(startOfWeek(new Date(), { weekStartsOn: 1 }));
+  };
   const events_per_day = Array.from(Array(7).keys()).map((i) => {
     const date = add(currentWeek, { days: i });
     let events_this_day = props.events.filter((event) => {
@@ -39,7 +45,15 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
           }}
         >
           <IconButton
-            size="large"
+            size="medium"
+            color="primary"
+            onClick={go_today}
+            style={currentWeek > today ? {} : { visibility: "hidden" }}
+          >
+            <KeyboardDoubleArrowLeft fontSize="inherit" />
+          </IconButton>
+          <IconButton
+            size="medium"
             onClick={() => {
               setCurrentWeek(
                 startOfWeek(add(currentWeek, { days: -7 }), {
@@ -53,13 +67,13 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
               marginLeft: "auto",
             }}
           >
-            <ChevronLeft />
+            <ChevronLeft fontSize="inherit" />
           </IconButton>
           <Typography align="center">
             week {format(currentWeek, "I")}
           </Typography>
           <IconButton
-            size="large"
+            size="medium"
             onClick={() => {
               setCurrentWeek(
                 startOfWeek(add(currentWeek, { days: 7 }), {
@@ -73,7 +87,15 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
               flexGrow: 1,
             }}
           >
-            <ChevronRight />
+            <ChevronRight fontSize="inherit" />
+          </IconButton>
+          <IconButton
+            size="medium"
+            color="primary"
+            onClick={go_today}
+            style={currentWeek < today ? {} : { visibility: "hidden" }}
+          >
+            <KeyboardDoubleArrowRight fontSize="inherit" />
           </IconButton>
         </div>
       </Stack>
