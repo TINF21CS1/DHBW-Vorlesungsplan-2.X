@@ -11,7 +11,7 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import { LocationOn, AccessTime } from "@mui/icons-material";
+import { LocationOn, AccessTime, Tag } from "@mui/icons-material";
 import { format } from "date-fns";
 import { Event } from "ical.js";
 import LabeledIcon from "./LabeledIcon";
@@ -67,6 +67,9 @@ const CalendarItem = (props: { event: Event }) => {
           )}
           {props.event.location.trim() !== "" && (
             <LabeledIcon icon={<LocationOn />} text={props.event.location} />
+          )}
+          {props.event.id !== "" && (
+            <LabeledIcon icon={<Tag />} text={props.event.id} />
           )}
           {props.event.description && (
             <DialogContentText>{props.event.description}</DialogContentText>
