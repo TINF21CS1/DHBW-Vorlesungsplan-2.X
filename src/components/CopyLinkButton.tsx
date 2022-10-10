@@ -39,7 +39,6 @@ const CopyButton = (props: { text: string; url: string }) => {
     }
     setOpen(false);
   };
-  // FIXME: Provide an alternative if the clipboard is unavailable
   return (
     <div>
       <Button
