@@ -66,10 +66,24 @@ const CalendarItem = (props: { event: Event }) => {
             />
           )}
           {props.event.location.trim() !== "" && (
-            <LabeledIcon icon={<LocationOn />} text={<Typography sx={{userSelect: "all"}}>{props.event.location}</Typography>} />
+            <LabeledIcon
+              icon={<LocationOn />}
+              text={
+                <Typography sx={{ userSelect: "all" }}>
+                  {props.event.location}
+                </Typography>
+              }
+            />
           )}
           {props.event.uid !== "" && (
-            <LabeledIcon icon={<Tag />} text={<Typography sx={{userSelect: "all"}}>{props.event.uid}</Typography>}/>
+            <LabeledIcon
+              icon={<Tag />}
+              text={
+                <Typography sx={{ userSelect: "all" }}>
+                  {props.event.uid}
+                </Typography>
+              }
+            />
           )}
           {props.event.description && (
             <DialogContentText>{props.event.description}</DialogContentText>
