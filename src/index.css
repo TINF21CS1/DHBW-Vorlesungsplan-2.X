@@ -4,3 +4,16 @@
   box-sizing: border-box;
   font-family: "Roboto", Arial, Helvetica, sans-serif;
 }
+
+.navbar {
+  margin-left: env(titlebar-area-x, auto) !important;
+  margin-top: env(titlebar-area-y, auto) !important;
+  max-width: env(titlebar-area-width, 1536px) !important;
+  app-region: drag;
+  -webkit-app-region: drag;
+}
+
+.navbar button {
+  app-region: no-drag;
+  -webkit-app-region: no-drag;
+}
