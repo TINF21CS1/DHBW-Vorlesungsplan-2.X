@@ -4,7 +4,7 @@ import WeeklyCalendar from "./components/WeeklyCalendar";
 import WeeklyCalendarSkeleton from "./components/WeeklyCalendarSkeleton";
 import iCal, { Component, Event } from "ical.js";
 
-const Calendar = (props: { url: string }) => {
+const Calendar = (props: { url: string; start: Date }) => {
   const [events, setEvents] = useState<Event[] | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
   if (loading) {
@@ -30,7 +30,7 @@ const Calendar = (props: { url: string }) => {
   return (
     <Container maxWidth="xl">
       {!loading && events && events.length > 0 && (
-        <WeeklyCalendar events={events} />
+        <WeeklyCalendar events={events} start={props.start} />
       )}
       {!loading && events && events.length === 0 && (
         <Typography variant="h5">No events in this calendar.</Typography>

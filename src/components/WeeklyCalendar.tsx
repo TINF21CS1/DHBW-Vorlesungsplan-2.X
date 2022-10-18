@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Grid,
   Stack,
@@ -16,12 +15,17 @@ import {
 import { startOfWeek, isSameDay, add, format } from "date-fns";
 import { Event } from "ical.js";
 import CalendarItem from "./CalendarItem";
+import { useNavigate } from "react-router-dom";
 
-const WeeklyCalendar = (props: { events: Event[] }) => {
+const WeeklyCalendar = (props: { events: Event[]; start: Date }) => {
   const today = startOfWeek(new Date(), { weekStartsOn: 1 });
-  const [currentWeek, setCurrentWeek] = useState(today);
+  const currentWeek = startOfWeek(props.start, { weekStartsOn: 1 });
+  let navigate = useNavigate();
+  const navigate_to_date = (date: Date) => {
+    navigate(`/${format(date, "yyyy-MM-dd")}`);
+  };
   const go_today = () => {
-    setCurrentWeek(startOfWeek(new Date(), { weekStartsOn: 1 }));
+    navigate_to_date(today);
   };
   const events_per_day = Array.from(Array(7).keys()).map((i) => {
     const date = add(currentWeek, { days: i });
@@ -55,7 +59,7 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
           <IconButton
             size="medium"
             onClick={() => {
-              setCurrentWeek(
+              navigate_to_date(
                 startOfWeek(add(currentWeek, { days: -7 }), {
                   weekStartsOn: 1,
                 })
@@ -75,7 +79,7 @@ const WeeklyCalendar = (props: { events: Event[] }) => {
           <IconButton
             size="medium"
             onClick={() => {
-              setCurrentWeek(
+              navigate_to_date(
                 startOfWeek(add(currentWeek, { days: 7 }), {
                   weekStartsOn: 1,
                 })

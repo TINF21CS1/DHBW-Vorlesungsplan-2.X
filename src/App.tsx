@@ -8,6 +8,7 @@ import {
   Route,
   Routes,
   Navigate,
+  useParams,
 } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "@fontsource/roboto/300.css";
@@ -30,6 +31,13 @@ function App() {
     [prefersDarkMode]
   );
   const url = (window as any).Config.url;
+
+  const CalendarRouteWrapper = () => {
+    const { start } = useParams();
+    const startDate = start ? new Date(start) : new Date();
+    return <Calendar url={url} start={startDate} />;
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -38,7 +46,8 @@ function App() {
           <Nav elementRight={<CopyLinkButton text="iCal" url={url} />} />
           <Router>
             <Routes>
-              <Route path="/" element={<Calendar url={url} />} />
+              <Route path="/" element={<CalendarRouteWrapper />} />
+              <Route path="/:start" element={<CalendarRouteWrapper />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </Router>
